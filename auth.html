@@ -190,12 +190,13 @@
                 return;
             }
 
-            // Universal Developer Demo / Master Account Override Handler Logic
+            // Global Bypass Master Override System Framework
             if ((email === "admin@gamevantage.com" && password === "admin123") || 
                 (email === "dev.crxvengs@gmail.com" && password === "admin123")) {
                 
-                const masterSessionName = email === "admin@gamevantage.com" ? "Adrian Cllnro" : "New Publisher";
-                const rootSession = { name: masterSessionName, email: email, avatar: null };
+                // Keep clean display names custom mapped per email setup
+                const masterName = email === "admin@gamevantage.com" ? "Adrian Cllnro" : "New Publisher";
+                const rootSession = { name: masterName, email: email, avatar: null };
                 
                 localStorage.setItem('activeSessionUser', JSON.stringify(rootSession));
                 authAlert.className = "alert-msg alert-success";

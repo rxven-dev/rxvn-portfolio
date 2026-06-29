@@ -48,3 +48,28 @@ async function registerNewCloudUser(newUser) {
     
     return await saveCloudUsers(currentUsersList);
 }
+
+/**
+ * Updates an existing user's profile information in the cloud database.
+ * Merges new updates (like name or avatar) without erasing the existing password.
+ */
+async function updateCloudUserProfile(email, updatedFields) {
+    try {
+        let currentUsersList = await fetchCloudUsers();
+        
+        // Find the user index matching the email
+        const userIndex = currentUsersList.findIndex(user => user.email.toLowerCase() === email.toLowerCase());
+        
+        if (userIndex !== -1) {
+            // Merge the existing data with the new values
+            currentUsersList[userIndex] = { ...currentUsersList[userIndex], ...updatedFields };
+            
+            // Save the updated list back to the cloud database
+            return await saveCloudUsers(currentUsersList);
+        }
+        return false;
+    } catch (err) {
+        console.error("Failed to update profile in cloud:", err);
+        return false;
+    }
+}

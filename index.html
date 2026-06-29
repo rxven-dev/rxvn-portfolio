@@ -35,19 +35,38 @@
                 height: auto !important;
                 min-height: auto !important;
                 position: static !important;
-                padding: 16px !important;
+                padding: 12px !important;
+                background: #11111b !important;
+                border-bottom: 1px solid var(--border-color);
             }
+            .sidebar-brand {
+                margin-bottom: 12px !important;
+                text-align: center;
+                justify-content: center;
+            }
+            /* Horizontally scrollable smooth menu container */
             .sidebar-menu {
                 display: flex !important;
-                flex-wrap: wrap !important;
-                gap: 6px !important;
-                margin: 16px 0 !important;
+                flex-direction: row !important;
+                overflow-x: auto !important;
+                white-space: nowrap !important;
+                gap: 8px !important;
+                margin: 4px 0 !important;
+                padding-bottom: 6px !important;
+                -webkit-overflow-scrolling: touch;
+            }
+            .sidebar-menu::-webkit-scrollbar {
+                display: none; /* Hide scrollbar for ultra-clean clean look */
             }
             .menu-item {
-                flex: 1 1 calc(50% - 6px) !important;
-                padding: 10px !important;
+                display: inline-flex !important;
+                padding: 8px 16px !important;
                 font-size: 0.85rem !important;
-                justify-content: flex-start !important;
+                border-radius: 20px !important;
+                flex-shrink: 0 !important;
+            }
+            .sidebar-footer {
+                display: none !important; /* Hide massive profile block from sidebar to save phone space */
             }
             .main-content {
                 width: 100% !important;
@@ -58,8 +77,7 @@
                 flex-direction: column !important;
                 height: auto !important;
                 gap: 12px !important;
-                padding-bottom: 16px !important;
-                border-bottom: 1px solid var(--border-color);
+                padding: 8px 0 16px 0 !important;
             }
             .search-bar, .topbar-actions {
                 width: 100% !important;
@@ -71,21 +89,22 @@
                 grid-template-columns: 1fr !important;
                 gap: 16px !important;
             }
-            /* Stacks side-by-side flex or inline grid segments on fields automatically */
+            /* Smart grid content auto-stackers */
             div[style*="display: grid"], div[style*="grid-template-columns"] {
                 grid-template-columns: 1fr !important;
                 gap: 16px !important;
             }
             .welcome-banner {
-                padding: 20px !important;
+                padding: 16px !important;
                 flex-direction: column !important;
-                gap: 12px !important;
+                gap: 8px !important;
                 align-items: start !important;
+                text-align: left !important;
             }
             .welcome-banner h1 {
-                font-size: 1.4rem !important;
+                font-size: 1.3rem !important;
             }
-            /* Alignment for save configurations buttons row elements */
+            /* Buttons rows layouts alignments */
             div[style*="justify-content: flex-end"] {
                 justify-content: center !important;
             }
@@ -121,9 +140,9 @@
                     <span id="sidebarStatusDot" style="position: absolute; bottom: 2px; right: 2px; width: 12px; height: 12px; border-radius: 50%; border: 2px solid var(--bg-sidebar); transition: all 0.3s ease;"></span>
                 </div>
                 <div class="user-info">
-    <p class="user-name" id="sidebarUsernameText"><i class="ri-git-fork-fill"></i> New Publisher</p>
-    <p class="user-role"><i class="ri-code-line"></i>: dev-rxn</p>
-</div>
+                    <p class="user-name" id="sidebarUsernameText"><i class="ri-git-fork-fill"></i> New Publisher</p>
+                    <p class="user-role"><i class="ri-code-line"></i>: dev-rxn</p>
+                </div>
             </div>
         </aside>
 
@@ -358,8 +377,8 @@
                             <p style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 12px;">Active Session Management:</p>
             
                             <button class="btn" onclick="window.showCustomPopup('Your developer session has been safely closed. Terminating terminal authentication layers...', 'danger', () => { window.location.href='auth.html'; });" style="background-color: var(--danger); color: white; display: flex; align-items: center; gap: 8px; cursor: pointer;">
-       <i class="ri-logout-box-r-line"></i> Sign Out
-   </button>
+                                <i class="ri-logout-box-r-line"></i> Sign Out
+                            </button>
                          </div>
                      </div>
                 </div>

@@ -23,94 +23,114 @@
             vertical-align: middle;
         }
 
-        /* --- MOBILE LAYOUT RESPONSIVE FIXES --- */
+        /* --- DESKTOP LAYOUT PERSISTENCE FOR MOBILE PANELS --- */
         @media (max-width: 768px) {
+            html, body {
+                font-size: 11px !important; /* Slightly scale down baseline text to make elements fit */
+            }
             .dashboard-wrapper {
                 display: flex !important;
-                flex-direction: column !important;
-                min-height: 100vh;
+                flex-direction: row !important; /* Forces side-by-side desktop layout on phone screens */
+                align-items: stretch !important;
+                width: 100% !important;
+                overflow-x: hidden !important;
             }
             .sidebar {
-                width: 100% !important;
-                height: auto !important;
-                min-height: auto !important;
-                position: static !important;
-                padding: 12px !important;
-                background: #11111b !important;
-                border-bottom: 1px solid var(--border-color);
+                width: 130px !important; /* Compact desktop style fixed width sidebar */
+                min-width: 130px !important;
+                height: 100vh !important;
+                position: sticky !important;
+                top: 0 !important;
+                padding: 12px 8px !important;
             }
             .sidebar-brand {
-                margin-bottom: 12px !important;
-                text-align: center;
-                justify-content: center;
+                font-size: 0.95rem !important;
+                margin-bottom: 20px !important;
+                gap: 4px !important;
             }
-            /* Horizontally scrollable smooth menu container */
+            .sidebar-brand .brand-icon {
+                font-size: 1.1rem !important;
+            }
             .sidebar-menu {
-                display: flex !important;
-                flex-direction: row !important;
-                overflow-x: auto !important;
-                white-space: nowrap !important;
-                gap: 8px !important;
-                margin: 4px 0 !important;
-                padding-bottom: 6px !important;
-                -webkit-overflow-scrolling: touch;
-            }
-            .sidebar-menu::-webkit-scrollbar {
-                display: none; /* Hide scrollbar for ultra-clean clean look */
+                gap: 4px !important;
             }
             .menu-item {
-                display: inline-flex !important;
-                padding: 8px 16px !important;
-                font-size: 0.85rem !important;
-                border-radius: 20px !important;
-                flex-shrink: 0 !important;
+                padding: 8px 6px !important;
+                font-size: 0.72rem !important;
+                gap: 6px !important;
+                border-radius: 6px !important;
             }
             .sidebar-footer {
-                display: none !important; /* Hide massive profile block from sidebar to save phone space */
+                padding-top: 10px !important;
+                gap: 6px !important;
+            }
+            .sidebar-footer .user-avatar {
+                width: 28px !important;
+                height: 28px !important;
+            }
+            .sidebar-footer .user-info {
+                display: block !important;
+            }
+            .user-name {
+                font-size: 0.7rem !important;
+            }
+            .user-role {
+                font-size: 0.6rem !important;
             }
             .main-content {
-                width: 100% !important;
+                flex: 1 !important;
+                width: calc(100% - 130px) !important;
                 margin-left: 0 !important;
                 padding: 12px !important;
+                overflow-x: hidden !important;
             }
             .topbar {
-                flex-direction: column !important;
-                height: auto !important;
-                gap: 12px !important;
-                padding: 8px 0 16px 0 !important;
+                height: 50px !important;
+                padding: 0 !important;
+                margin-bottom: 16px !important;
+                display: flex !important;
+                flex-direction: row !important;
+                justify-content: space-between !important;
+                align-items: center !important;
             }
-            .search-bar, .topbar-actions {
-                width: 100% !important;
+            .search-bar {
+                max-width: 140px !important;
+                height: 34px !important;
+                padding: 0 8px !important;
+            }
+            .search-bar input {
+                font-size: 0.75rem !important;
             }
             .topbar-actions {
-                justify-content: space-between !important;
+                gap: 8px !important;
             }
-            .metrics-grid {
-                grid-template-columns: 1fr !important;
-                gap: 16px !important;
-            }
-            /* Smart grid content auto-stackers */
-            div[style*="display: grid"], div[style*="grid-template-columns"] {
-                grid-template-columns: 1fr !important;
-                gap: 16px !important;
+            #platformCurrencyConverter {
+                padding: 6px 8px !important;
+                font-size: 0.75rem !important;
+                border-radius: 6px !important;
             }
             .welcome-banner {
                 padding: 16px !important;
-                flex-direction: column !important;
-                gap: 8px !important;
-                align-items: start !important;
-                text-align: left !important;
+                border-radius: 10px !important;
             }
             .welcome-banner h1 {
-                font-size: 1.3rem !important;
+                font-size: 1.15rem !important;
             }
-            /* Buttons rows layouts alignments */
-            div[style*="justify-content: flex-end"] {
-                justify-content: center !important;
+            .welcome-banner .subtitle {
+                font-size: 0.75rem !important;
             }
-            #saveProfileSettingsBtn {
-                width: 100% !important;
-                justify-content: center !important;
+            /* Maintained Grid Alignment Matrix Maps */
+            div[style*="display: grid"], div[style*="grid-template-columns"] {
+                grid-template-columns: 1fr !important; /* Stack forms internally to stay readable */
+                gap: 12px !important;
+            }
+            .metric-card {
+                padding: 16px !important;
+                border-radius: 10px !important;
+            }
+            .custom-theme-input {
+                padding: 8px 10px !important;
+                font-size: 0.8rem !important;
             }
         }
     </style>
@@ -137,7 +157,7 @@
             <div class="sidebar-footer">
                 <div class="user-avatar" style="position: relative;">
                     <img id="sidebarUserAvatarImg" src="https://i.ibb.co/yc0TbBZ7/pfp.jpg" alt="User Avatar">
-                    <span id="sidebarStatusDot" style="position: absolute; bottom: 2px; right: 2px; width: 12px; height: 12px; border-radius: 50%; border: 2px solid var(--bg-sidebar); transition: all 0.3s ease;"></span>
+                    <span id="sidebarStatusDot" style="position: absolute; bottom: 2px; right: 2px; width: 10px; height: 10px; border-radius: 50%; border: 2px solid var(--bg-sidebar); transition: all 0.3s ease;"></span>
                 </div>
                 <div class="user-info">
                     <p class="user-name" id="sidebarUsernameText"><i class="ri-git-fork-fill"></i> New Publisher</p>

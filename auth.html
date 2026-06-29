@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>雷文 // Gateway Authentication</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+    <style>
+        :root {
+            --bg-main: #090d16;
+            --bg-card: #1f2937;
+            --border-color: #374151;
+            --text-primary: #f9fafb;
+            --text-secondary: #9ca3af;
+            --accent-primary: #6366f1;
+            --accent-hover: #4f46e5;
+            --danger: #ef4444;
+            --success: #10b981;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        body { background-color: var(--bg-main); color: var(--text-primary); display: flex; align-items: center; justify-content: center; min-height: 100vh; overflow-x: hidden; }
+        .auth-container { background: var(--bg-card); border: 1px solid var(--border-color); width: 100%; max-width: 440px; border-radius: 12px; padding: 36px; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3); }
+        .auth-header { text-align: center; margin-bottom: 24px; }
+        .auth-brand { display: inline-flex; align-items: center; gap: 8px; font-size: 1.5rem; font-weight: 700; color: var(--text-primary); margin-bottom: 6px; }
+        .auth-brand i { color: var(--accent-primary); }
+        .auth-subtitle { color: var(--text-secondary); font-size: 0.875rem; }
+        .form-group { margin-bottom: 16px; }
+        .form-group label { display: block; font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 6px; font-weight: 500; }
+        .input-wrapper { position: relative; }
+        .input-wrapper i { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--text-secondary); font-size: 1.1rem; }
+        .input-wrapper input { width: 100%; background: #111827; border: 1px solid var(--border-color); border-radius: 8px; padding: 12px 12px 12px 40px; color: var(--text-primary); font-size: 0.95rem; outline: none; transition: border-color 0.2s; }
+        .input-wrapper input:focus { border-color: var(--accent-primary); }
+        .captcha-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; align-items: center; background: #111827; border: 1px solid var(--border-color); padding: 8px; border-radius: 8px; margin-bottom: 20px; }
+        .captcha-box { font-weight: 700; font-size: 1.25rem; letter-spacing: 4px; color: var(--accent-primary); background: #1f2937; height: 40px; display: flex; align-items: center; justify-content: center; border-radius: 6px; border: 1px dashed var(--border-color); user-select: none; position: relative; }
+        .captcha-input { width: 100%; background: transparent; border: none; padding: 6px 12px; color: var(--text-primary); font-size: 1rem; outline: none; text-align: center; border-bottom: 2px solid var(--border-color); }
+        .btn-submit { width: 100%; background: var(--accent-primary); color: white; border: none; border-radius: 8px; padding: 14px; font-size: 0.95rem; font-weight: 600; cursor: pointer; transition: background 0.2s; display: flex; align-items: center; justify-content: center; gap: 8px; }
+        .btn-submit:hover { background: var(--accent-hover); }
+        .toggle-view-text { text-align: center; margin-top: 20px; font-size: 0.875rem; color: var(--text-secondary); }
+        .toggle-view-text a { color: var(--accent-primary); text-decoration: none; font-weight: 600; cursor: pointer; }
+        .toggle-view-text a:hover { text-decoration: underline; }
+        .alert-msg { padding: 12px; border-radius: 8px; font-size: 0.875rem; margin-bottom: 16px; display: none; text-align: center; font-weight: 500; }
+        .alert-danger { background: rgba(239, 68, 68, 0.1); border: 1px solid var(--danger); color: var(--danger); }
+        .alert-success { background: rgba(16, 185, 129, 0.1); border: 1px solid var(--success); color: var(--success); }
+        
+        /* Verification Modal Box Overlay */
+        .modal-verify { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.75); display: flex; align-items: center; justify-content: center; z-index: 1000; display: none; }
+        .modal-verify-content { background: var(--bg-card); border: 1px solid var(--border-color); padding: 32px; border-radius: 12px; width: 100%; max-width: 380px; text-align: center; }
+        .verify-input { background: #111827; border: 1px solid var(--border-color); border-radius: 8px; padding: 12px; color: white; font-size: 1.5rem; letter-spacing: 8px; text-align: center; width: 160px; outline: none; margin: 20px 0; }
+        .verify-input:focus { border-color: var(--accent-primary); }
+    </style>
+</head>
+<body>
+
+    <div class="auth-container">
+        <div class="auth-header">
+            <div class="auth-brand">
+                <i class="ri-shield-user-line"></i>
+                <span>Gamerack 🛒</span>
+            </div>
+            <p class="auth-subtitle" id="gatewaySubtitle">Secure Publisher Gateway Authorization</p>
+        </div>
+
+        <div id="authAlert" class="alert-msg"></div>
+
+        <form id="loginForm">
+            <div class="form-group">
+                <label>Developer Email Account</label>
+                <div class="input-wrapper">
+                    <i class="ri-mail-line"></i>
+                    <input type="email" id="loginEmail" placeholder="" required>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Security Access Code</label>
+                <div class="input-wrapper">
+                    <i class="ri-lock-password-line"></i>
+                    <input type="password" id="loginPassword" placeholder="••••••••" required>
+                </div>
+            </div>
+            <label style="display: block; font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 8px; font-weight: 500;">Human Verification Challenge</label>
+            <div class="captcha-row">
+                <div class="captcha-box" id="captchaStringBox">XXXX</div>
+                <input type="text" class="captcha-input" id="captchaUserInput" placeholder="Enter Code" maxlength="4" required>
+            </div>
+            <button type="submit" class="btn-submit">
+                <span>Access Dashboard Terminal</span>
+                <i class="ri-arrow-right-line"></i>
+            </button>
+            <p class="toggle-view-text">New to the terminal? <a id="linkToSignUp">Create Publisher Profile</a></p>
+        </form>
+
+        <form id="signUpForm" style="display: none;">
+            <div class="form-group">
+                <label>Full Publisher Name</label>
+                <div class="input-wrapper">
+                    <i class="ri-user-line"></i>
+                    <input type="text" id="signUpName" placeholder="e.g., Adrian Cllnro" required>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Corporate Email Address</label>
+                <div class="input-wrapper">
+                    <i class="ri-mail-line"></i>
+                    <input type="email" id="signUpEmail" placeholder="publisher@domain.com" required>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Establish Password Access Token</label>
+                <div class="input-wrapper">
+                    <i class="ri-lock-line"></i>
+                    <input type="password" id="signUpPassword" placeholder="Minimum 6 characters" minlength="6" required>
+                </div>
+            </div>
+            <button type="submit" class="btn-submit" style="background-color: #4f46e5;">
+                <span>Dispatch Verification Code</span>
+                <i class="ri-mail-send-line"></i>
+            </button>
+            <p class="toggle-view-text">Already registered? <a id="linkToLogin">Return to Login</a></p>
+        </form>
+    </div>
+
+    <div id="verificationModal" class="modal-verify">
+        <div class="modal-verify-content">
+            <i class="ri-mail-open-line" style="font-size: 3rem; color: var(--accent-primary);"></i>
+            <h3 style="margin-top: 12px; font-size: 1.25rem;">Verify Your Email</h3>
+            <p style="color: var(--text-secondary); font-size: 0.85rem; margin-top: 8px;">A security code was sent to your inbox. Enter it below to authorize profile initialization.</p>
+            <input type="text" id="emailCodeInput" class="verify-input" placeholder="0000" maxlength="4">
+            <button id="btnVerifyCode" class="btn-submit" style="background: var(--success);">Complete Enrollment</button>
+        </div>
+    </div>
+
+    <script>
+        // Initialize EmailJS Engine Using User API Credentials
+        emailjs.init("owB2XT75OBCwbGap4");
+
+        let correctCaptchaCode = "";
+        let expectedVerificationPin = "";
+        let temporaryRegistrationCache = null;
+
+        const authAlert = document.getElementById("authAlert");
+        const loginForm = document.getElementById("loginForm");
+        const signUpForm = document.getElementById("signUpForm");
+        const gatewaySubtitle = document.getElementById("gatewaySubtitle");
+        const verificationModal = document.getElementById("verificationModal");
+
+        // --- VIEW SWITCH TOGGLES ---
+        document.getElementById("linkToSignUp").addEventListener("click", () => {
+            authAlert.style.display = "none";
+            loginForm.style.display = "none";
+            signUpForm.style.display = "block";
+            gatewaySubtitle.innerText = "Initialize New Publisher Profile Nodes";
+        });
+
+        document.getElementById("linkToLogin").addEventListener("click", () => {
+            authAlert.style.display = "none";
+            signUpForm.style.display = "none";
+            loginForm.style.display = "block";
+            gatewaySubtitle.innerText = "Secure Publisher Gateway Authorization";
+        });
+
+        // --- CAPTCHA GENERATOR ---
+        function generateNewCaptcha() {
+            const characters = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+            let result = '';
+            for (let i = 0; i < 4; i++) {
+                result += characters.charAt(Math.floor(Math.random() * characters.length));
+            }
+            correctCaptchaCode = result;
+            document.getElementById("captchaStringBox").innerText = result;
+        }
+        window.addEventListener('DOMContentLoaded', generateNewCaptcha);
+
+        // --- LOGIN OPERATION PANEL ---
+        loginForm.addEventListener("submit", function(e) {
+            e.preventDefault();
+            const email = document.getElementById("loginEmail").value.trim();
+            const password = document.getElementById("loginPassword").value;
+            const captchaVal = document.getElementById("captchaUserInput").value.trim().toUpperCase();
+
+            if (captchaVal !== correctCaptchaCode) {
+                authAlert.className = "alert-msg alert-danger";
+                authAlert.innerText = "Security Halt: Verification Captcha sequence does not match.";
+                authAlert.style.display = "block";
+                generateNewCaptcha();
+                document.getElementById("captchaUserInput").value = "";
+                return;
+            }
+
+            // Root profile override handler logic
+            if (email === "admin@gamevantage.com" && password === "admin123") {
+                const rootSession = { name: "Adrian Cllnro", email: "admin@gamevantage.com", avatar: null };
+                localStorage.setItem('activeSessionUser', JSON.stringify(rootSession));
+                authAlert.className = "alert-msg alert-success";
+                authAlert.innerText = "Terminal Authorized. Accessing environment framework...";
+                authAlert.style.display = "block";
+                setTimeout(() => { window.location.href = 'index.html'; }, 1200);
+                return;
+            }
+
+            let systemUsers = JSON.parse(localStorage.getItem('systemUsers')) || [];
+            const matchedUser = systemUsers.find(user => user.email === email && user.password === password);
+
+            if (matchedUser) {
+                localStorage.setItem('activeSessionUser', JSON.stringify(matchedUser));
+                authAlert.className = "alert-msg alert-success";
+                authAlert.innerText = "Terminal Authorized. Accessing environment framework...";
+                authAlert.style.display = "block";
+                setTimeout(() => { window.location.href = 'index.html'; }, 1200);
+            } else {
+                authAlert.className = "alert-msg alert-danger";
+                authAlert.innerText = "Access Denied: Invalid configuration credential matrix pairing.";
+                authAlert.style.display = "block";
+                generateNewCaptcha();
+            }
+        });
+
+        // --- SIGN UP & DISPATCH VERIFICATION PROTOCOLS ---
+        signUpForm.addEventListener("submit", function(e) {
+            e.preventDefault();
+            const name = document.getElementById("signUpName").value.trim();
+            const email = document.getElementById("signUpEmail").value.trim();
+            const password = document.getElementById("signUpPassword").value;
+
+            let systemUsers = JSON.parse(localStorage.getItem('systemUsers')) || [];
+            if (email === "admin@gamevantage.com" || systemUsers.some(u => u.email === email)) {
+                authAlert.className = "alert-msg alert-danger";
+                authAlert.innerText = "Security Halt: This corporate email is already assigned.";
+                authAlert.style.display = "block";
+                return;
+            }
+
+            // Generate a secure 4-digit verification string
+            expectedVerificationPin = Math.floor(1000 + Math.random() * 9000).toString();
+
+            // Cache registration fields temporarily until verification passes
+            temporaryRegistrationCache = { name, email, password, avatar: null };
+
+            authAlert.className = "alert-msg alert-success";
+            authAlert.innerText = "Contacting Mail Server. Please hold...";
+            authAlert.style.display = "block";
+
+            // Execute dynamic template parameters match pattern for Template template_2qlbqr2
+            const templateParams = {
+                to_name: name,
+                to_email: email,
+                verification_code: expectedVerificationPin,
+                reply_to: "support@gamevantage.com"
+            };
+
+            emailjs.send("service_zkre1sb", "template_2qlbqr2", templateParams)
+                .then(() => {
+                    authAlert.style.display = "none";
+                    verificationModal.style.display = "flex";
+                })
+                .catch((error) => {
+                    console.error("EmailJS Engine Error Vector:", error);
+                    authAlert.className = "alert-msg alert-danger";
+                    authAlert.innerText = "Mail Dispatch Failed. Check system API console configs.";
+                    authAlert.style.display = "block";
+                });
+        });
+
+        // --- CODE VALIDATION & ENROLLMENT SUBMISSION ---
+        document.getElementById("btnVerifyCode").addEventListener("click", () => {
+            const enteredCode = document.getElementById("emailCodeInput").value.trim();
+
+            if (enteredCode === expectedVerificationPin) {
+                let systemUsers = JSON.parse(localStorage.getItem('systemUsers')) || [];
+                systemUsers.push(temporaryRegistrationCache);
+                localStorage.setItem('systemUsers', JSON.stringify(systemUsers));
+
+                // Save automatically into active session logs
+                localStorage.setItem('activeSessionUser', JSON.stringify(temporaryRegistrationCache));
+
+                verificationModal.style.display = "none";
+                authAlert.className = "alert-msg alert-success";
+                authAlert.innerText = "Profile Authorized! Booting interface parameters...";
+                authAlert.style.display = "block";
+
+                setTimeout(() => { window.location.href = 'index.html'; }, 1500);
+            } else {
+                alert("Security Code Mismatch. Please check your verification digits and retry.");
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,1116 @@
+/* ==========================================================================
+   CORE STYLING VARIABLES & SYSTEM DEFAULTS - LIQUID GLASS REFRESH
+   ========================================================================== */
+:root, html.dark-theme {
+    --bg-main: #060913;
+    --bg-sidebar: rgba(17, 24, 39, 0.45); 
+    --bg-card: rgba(31, 41, 55, 0.4);      
+    --bg-input: rgba(17, 24, 39, 0.5);
+    --border-color: rgba(255, 255, 255, 0.08); 
+    --text-primary: #f9fafb;
+    --text-secondary: #9ca3af;
+    --accent-primary: #6366f1;
+    --accent-hover: #4f46e5;
+    --success: #10b981;
+    --warning: #f59e0b;
+    --danger: #ef4444;
+}
+
+/* ==========================================================================
+   PREMIUM LIGHT MODE THEME OVERRIDES (CRISP & CLEAN DESIGN)
+   ========================================================================== */
+html.light-theme {
+    --bg-main: #f0f2f6;                      /* Soft, cool gray background to create depth */
+    --bg-sidebar: #ffffff;                  /* Crisp white sidebar */
+    --bg-card: #ffffff;                     /* Pop-out solid white content layers */
+    --bg-input: #f4f6fa;                    /* Clean inset input layout fields */
+    --border-color: rgba(0, 0, 0, 0.06);     
+    --text-primary: #1c1e24;                 
+    --text-secondary: #6b7280;               
+    --accent-primary: #4f46e5;
+    --accent-hover: #3730a3;
+}
+
+:root, html.dark-theme {
+    --bg-main: #060913;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Inter', sans-serif;
+}
+
+body {
+    background-color: var(--bg-main) !important;
+    background-image: radial-gradient(circle at 80% 20%, rgba(99, 102, 241, 0.12) 0%, transparent 50%),
+                      radial-gradient(circle at 10% 80%, rgba(16, 185, 129, 0.06) 0%, transparent 40%);
+    background-attachment: fixed;
+    color: var(--text-primary) !important;
+    overflow-x: hidden;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Alternate Background Gradient for Light Mode Ambient Pop */
+html.light-theme body {
+    background-image: radial-gradient(circle at 80% 20%, rgba(99, 102, 241, 0.06) 0%, transparent 50%),
+                      radial-gradient(circle at 10% 80%, rgba(16, 185, 129, 0.05) 0%, transparent 40%);
+}
+
+/* Master Layout Framework */
+.dashboard-wrapper {
+    display: flex;
+    min-height: 100vh;
+}
+
+.chart-container {
+    position: relative;
+    height: 200px; 
+    width: 100%;
+}
+
+.chart-card {
+    min-height: 290px;
+}
+
+/* ==========================================================================
+   SIDEBAR NAVIGATION DRAWER STYLING
+   ========================================================================== */
+.sidebar {
+    width: 260px;
+    background-color: var(--bg-sidebar) !important;
+    backdrop-filter: blur(30px) saturate(160%) !important;
+    -webkit-backdrop-filter: blur(30px) saturate(160%) !important;
+    border-right: 1px solid var(--border-color) !important;
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    height: 100vh;
+    z-index: 100;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.sidebar-brand {
+    padding: 24px;
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--text-primary) !important;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.brand-icon {
+    color: var(--accent-primary);
+    font-size: 1.5rem;
+}
+
+.sidebar-menu {
+    padding: 24px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    flex-grow: 1;
+}
+
+.menu-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    color: var(--text-secondary) !important;
+    text-decoration: none;
+    font-weight: 500;
+    border-radius: 12px;
+    transition: all 0.2s ease;
+}
+
+.menu-item i {
+    font-size: 1.2rem;
+}
+
+.menu-item:hover, .menu-item.active {
+    background-color: rgba(99, 102, 241, 0.12);
+    color: var(--accent-primary) !important;
+}
+
+.sidebar-footer {
+    padding: 16px 24px;
+    border-top: 1px solid var(--border-color);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.user-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    overflow: hidden;
+    background-color: #374151;
+}
+
+.user-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.user-info {
+    overflow: hidden;
+}
+
+.user-name {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text-primary) !important;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.user-role {
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+}
+
+/* Workspace Canvas Layout Components */
+.main-content {
+    margin-left: 260px;
+    flex-grow: 1;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.topbar {
+    height: 70px;
+    background-color: var(--bg-sidebar) !important;
+    backdrop-filter: blur(20px) !important;
+    -webkit-backdrop-filter: blur(20px) !important;
+    border-bottom: 1px solid var(--border-color) !important;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 32px;
+    position: sticky;
+    top: 0;
+    z-index: 90;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.search-bar {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background-color: var(--bg-input);
+    border: 1px solid var(--border-color);
+    padding: 8px 16px;
+    border-radius: 10px;
+    width: 300px;
+}
+
+.search-bar i {
+    color: var(--text-secondary);
+}
+
+.search-bar input {
+    background: none;
+    border: none;
+    outline: none;
+    color: var(--text-primary);
+    width: 100%;
+    font-size: 0.9rem;
+}
+
+.topbar-actions {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.action-icon-btn {
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    font-size: 1.25rem;
+    cursor: pointer;
+    position: relative;
+    padding: 4px;
+}
+
+.action-icon-btn .badge {
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    width: 8px;
+    height: 8px;
+    background-color: var(--danger);
+    border-radius: 50%;
+}
+
+/* Global Content Views Wrapper */
+.content-container {
+    padding: 32px;
+    flex-grow: 1;
+}
+
+.dashboard-view {
+    display: none;
+}
+
+.active-view {
+    display: block !important;
+}
+
+/* Welcome Segment Banners styling */
+.welcome-banner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 32px;
+}
+
+.welcome-banner h1 {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--text-primary) !important;
+    margin-bottom: 4px;
+}
+
+.subtitle {
+    color: var(--text-secondary) !important;
+    font-size: 0.95rem;
+}
+
+.date-badge {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-color);
+    padding: 8px 16px;
+    border-radius: 12px;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+/* ==========================================================================
+   REUSABLE LIQUID CARDS DESIGN ARCHITECTURE
+   ========================================================================== */
+.metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 24px;
+    margin-bottom: 32px;
+}
+
+.metric-card, .data-table-section, .modal-content {
+    background-color: var(--bg-card) !important;
+    border: 1px solid var(--border-color) !important;
+    border-radius: 24px !important; 
+    backdrop-filter: blur(24px) saturate(190%) !important; 
+    -webkit-backdrop-filter: blur(24px) saturate(190%) !important;
+    padding: 24px;
+    color: var(--text-primary) !important;
+    /* Soft premium shadow for light mode surfaces */
+    box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.05), 
+                0 4px 12px -3px rgba(0, 0, 0, 0.03) !important;
+    transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1), 
+                box-shadow 0.3s cubic-bezier(0.25, 1, 0.5, 1),
+                background-color 0.3s ease, border-color 0.3s ease;
+}
+
+/* Rich neon-depth black shadow exclusively for dark mode canvas views */
+html.dark-theme .metric-card, 
+html.dark-theme .data-table-section, 
+html.dark-theme .modal-content {
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.38), 
+                inset 0 1px 0 0 rgba(255, 255, 255, 0.08) !important;
+}
+
+/* Adjust drop shadows inside Dark Theme for optimal contrast matching */
+html.dark-theme .metric-card, html.dark-theme .data-table-section, html.dark-theme .modal-content {
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.38), 
+                inset 0 1px 0 0 rgba(255, 255, 255, 0.08) !important;
+}
+
+.metric-card:hover {
+    transform: scale(1.01) translateY(-2px);
+    box-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.22), 
+                inset 0 1px 0 0 rgba(255, 255, 255, 0.4) !important;
+}
+
+html.dark-theme .metric-card:hover {
+    box-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.45), 
+                inset 0 1px 0 0 rgba(255, 255, 255, 0.12) !important;
+}
+
+.metric-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.metric-title {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+}
+
+html.light-theme .metric-title {
+    color: #4b5563; /* Slightly darker charcoal subtext for premium clean readability */
+}
+
+.metric-icon-box {
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+}
+
+.bg-purple { background-color: rgba(99, 102, 241, 0.12); color: #6366f1; }
+.bg-blue   { background-color: rgba(59, 130, 246, 0.12); color: #3b82f6; }
+.bg-green  { background-color: rgba(16, 185, 129, 0.12); color: #10b981; }
+
+/* Premium bright contrast values when using Light Mode */
+html.light-theme .bg-purple { background-color: rgba(99, 102, 241, 0.15); color: #4f46e5; }
+html.light-theme .bg-blue   { background-color: rgba(59, 130, 246, 0.15); color: #2563eb; }
+html.light-theme .bg-green  { background-color: rgba(16, 185, 129, 0.15); color: #059669; }
+
+.metric-value {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--text-primary) !important;
+    margin-bottom: 8px;
+}
+
+.metric-value .unit {
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--text-secondary);
+}
+
+.metric-trend {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.metric-trend.up { color: var(--success); }
+.metric-trend.down { color: var(--danger); }
+
+.trend-label {
+    color: var(--text-secondary);
+    font-weight: 400;
+    margin-left: 2px;
+}
+
+/* Master Data Presentation Layout Elements */
+.table-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.table-card-header h3 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--text-primary) !important;
+}
+
+.table-responsive {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.dashboard-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+}
+
+.dashboard-table th {
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border-color);
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.dashboard-table td {
+    padding: 16px;
+    border-bottom: 1px solid var(--border-color);
+    color: var(--text-primary);
+    font-size: 0.95rem;
+    vertical-align: middle;
+}
+
+.dashboard-table tr:last-child td {
+    border-bottom: none;
+}
+
+/* Button UI Elements Blueprint */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 20px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.btn:active {
+    transform: scale(0.98);
+}
+
+.btn-primary {
+    background-color: var(--accent-primary);
+    color: #ffffff;
+}
+
+.btn-primary:hover {
+    background-color: var(--accent-hover);
+}
+
+.btn-secondary {
+    background-color: rgba(156, 163, 175, 0.1);
+    color: var(--text-primary);
+    border: 1px solid var(--border-color);
+}
+
+.btn-secondary:hover {
+    background-color: rgba(156, 163, 175, 0.2);
+}
+
+/* Framework Modals overlay masks */
+.modal-overlay {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 2000;
+}
+
+/* ==========================================================================
+   INTEGRATED LIQUID INPUT CONTROLS SPECIFICATION
+   ========================================================================== */
+.custom-theme-input {
+    width: 100%;
+    background-color: var(--bg-input) !important;
+    border: 1px solid var(--border-color) !important;
+    border-radius: 12px !important; /* Squircle matching */
+    padding: 12px 16px;
+    color: var(--text-primary) !important;
+    font-size: 0.95rem;
+    outline: none;
+    backdrop-filter: blur(10px);
+    transition: border-color 0.2s, background-color 0.2s, box-shadow 0.2s;
+}
+
+.custom-theme-input:focus {
+    border-color: rgba(99, 102, 241, 0.6) !important;
+    background-color: var(--bg-input) !important;
+    box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.15);
+}
+
+.custom-theme-input:disabled {
+    background-color: rgba(0, 0, 0, 0.04) !important;
+    color: var(--text-secondary) !important;
+    border-color: var(--border-color) !important;
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+html.dark-theme .custom-theme-input:disabled {
+    background-color: rgba(6, 9, 19, 0.4) !important;
+}
+
+/* Status Labels Matrix */
+.status-pill {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.status-pill.active { background-color: rgba(16, 185, 129, 0.15); color: var(--success); }
+.status-pill.warning { background-color: rgba(245, 158, 11, 0.15); color: var(--warning); }
+.status-pill.danger { background-color: rgba(239, 68, 68, 0.15); color: var(--danger); }
+
+/* Text Alignment Utility Extensions */
+.text-right { text-align: right; }
+
+/* Fix to stop individual items from stretching when there's only one or two cards */
+.game-cards-grid {
+    display: grid !important;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 280px)) !important; /* Forces strict max-bounds */
+    gap: 24px !important;
+    justify-content: start !important; /* Left-aligns the items beautifully */
+    width: 100% !important;
+}
+
+.game-display-card {
+    max-width: 280px !important; /* Hard cap constraint to keep it proportional */
+    width: 100% !important;
+}
+
+/* Prevents the newly generated cards from stretching out of proportion */
+.game-display-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+}
+
+.game-catalog-card {
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 18px;
+    overflow: hidden;
+    cursor: pointer;
+    box-shadow: 0 4px 14px -4px rgba(0, 0, 0, 0.05), 0 2px 6px -2px rgba(0, 0, 0, 0.03);
+    transition: transform 0.25s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.25s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.game-catalog-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 24px -8px rgba(0, 0, 0, 0.12);
+}
+
+html.dark-theme .game-catalog-card:hover {
+    box-shadow: 0 10px 20px rgba(0,0,0,0.25);
+}
+
+.game-catalog-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.12);
+}
+
+.card-banner-frame {
+    height: 160px;
+    width: 100%;
+}
+
+.card-banner-frame img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.card-details-deck {
+    padding: 20px;
+}
+
+.card-details-deck h4 {
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 4px;
+    color: var(--text-primary);
+}
+
+/* ==========================================================================
+   SYSTEM PREFERENCE TOGGLE SWITCH STYLES
+   ========================================================================== */
+.dashboard-view label {
+    position: relative;
+    display: inline-block;
+    width: 44px;
+    height: 24px;
+}
+
+.dashboard-view label input[type="checkbox"] {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.dashboard-view label input[type="checkbox"] + span {
+    position: absolute;
+    cursor: pointer;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-color: rgba(0, 0, 0, 0.15);
+    transition: background-color 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+    border-radius: 24px;
+}
+
+html.dark-theme .dashboard-view label input[type="checkbox"] + span {
+    background-color: rgba(255, 255, 255, 0.15);
+}
+
+.dashboard-view label input[type="checkbox"] + span:before {
+    position: absolute;
+    content: "";
+    height: 18px;
+    width: 18px;
+    left: 3px;
+    bottom: 3px;
+    background-color: #ffffff;
+    transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+    border-radius: 50%;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    z-index: 2;
+}
+
+.dashboard-view label input:checked + span {
+    background-color: #6366f1 !important; 
+}
+
+.dashboard-view label input:checked + span.success-toggle {
+    background-color: #10b981 !important; 
+}
+
+.dashboard-view label input:checked + span:before {
+    transform: translateX(20px);
+}
+
+/* ==========================================================================
+   EXACT REPLICATION OF COOL GRID TEMPLATE DESIGN
+   ========================================================================== */
+
+/* 1. The main catalog grid container alignment layout */
+.game-cards-grid {
+    display: grid !important;
+    /* This creates neat column tracks exactly like the photo, filling up rows naturally */
+    grid-template-columns: repeat(auto-fill, minmax(220px, 240px)) !important;
+    gap: 20px !important;
+    justify-content: start !important; /* Prevents stretching to fill gaps */
+    align-items: stretch !important;
+    width: 100% !important;
+    padding-top: 10px;
+}
+
+/* 2. The single card card size structure */
+.game-display-card {
+    display: flex !important;
+    flex-direction: column !important;
+    background-color: var(--bg-card) !important;
+    border: 1px solid var(--border-color) !important;
+    border-radius: 16px !important; /* Premium curved corner look */
+    overflow: hidden !important;
+    width: 100% !important;
+    max-width: 240px !important; /* Strictly clamps size so it never stretches out */
+    height: 320px !important;    /* Uniform height constraints */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05) !important;
+    transition: transform 0.2s ease, box-shadow 0.2s ease !important;
+}
+
+/* 3. The banner sizing to keep image sections uniform */
+.game-card-banner-wrapper {
+    height: 140px !important;
+    width: 100% !important;
+    overflow: hidden !important;
+    flex-shrink: 0 !important; /* Stop images from crushing out of frame */
+}
+
+.game-card-banner-wrapper img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+}
+
+/* 4. Text meta areas spacing adjustments */
+.game-card-meta {
+    padding: 12px 14px 4px 14px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    flex-grow: 1 !important; /* Pushes footer down cleanly */
+}
+
+.game-card-meta h3 {
+    font-size: 1rem !important;
+    font-weight: 700 !important;
+    margin-top: 6px !important;
+    margin-bottom: 2px !important;
+    color: var(--text-primary) !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important; /* Keeps long names looking clean */
+}
+
+/* 5. Footer and checkout items layout buttons */
+.game-card-footer {
+    padding: 0 14px 14px 14px !important;
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    background: transparent !important;
+    margin-top: auto !important; /* Locks perfectly to the bottom border area */
+}
+
+/* ==========================================================================
+   PREMIUM HOVER POP-UP EFFECT
+   ========================================================================== */
+
+/* 1. This prepares the card for smooth movement */
+.game-display-card {
+    /* ... keeps your existing styles ... */
+    
+    /* Crucial: transition makes the movement smooth instead of snappy */
+    transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1), 
+                box-shadow 0.3s cubic-bezier(0.25, 1, 0.5, 1) !important;
+}
+
+/* 2. This triggers EXACTLY when the mouse points at the card */
+.game-display-card:hover {
+    /* translateY(-8px) lifts the card up by 8 pixels */
+    /* scale(1.02) enlarges it slightly by 2% to make it 'pop' out at you */
+    transform: translateY(-8px) scale(1.02) !important;
+    
+    /* Pushes a soft, wider shadow underneath to make it look like it's floating high */
+    box-shadow: 0 20px 38px rgba(0, 0, 0, 0.14), 
+                0 15px 22px rgba(0, 0, 0, 0.08) !important;
+}
+
+/* 3. Dark mode specific shadow tuning so it glows subtly against the dark background */
+html.dark-theme .game-display-card:hover {
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5), 
+                0 0 1px rgba(255, 255, 255, 0.1) !important;
+}
+
+/* ==========================================================================
+     FULL WINDOW GAME EXPANSION DETAIL SYSTEM CANVAS OVERLAYS
+   ========================================================================== */
+.game-detail-overlay {
+    position: fixed;
+    top: 0;
+    left: 260px; /* Aligns perfectly right next to your sidebar drawer */
+    width: calc(100% - 260px);
+    height: 100vh;
+    background-color: var(--bg-main) !important;
+    z-index: 1500;
+    overflow-y: auto;
+    transform: translateX(100%); /* Keeps it hidden off-screen to the right */
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.game-detail-overlay.active {
+    transform: translateX(0); /* Sweeps in seamlessly when card is clicked */
+}
+
+.detail-window-content {
+    padding: 32px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.close-detail-btn {
+    background: none;
+    border: none;
+    color: var(--text-primary);
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    border-radius: 8px;
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-color);
+    margin-bottom: 24px;
+    transition: transform 0.2s;
+}
+
+.close-detail-btn:hover {
+    transform: translateX(-4px);
+}
+
+/* Structural Two-Column Core Layout splits */
+.detail-grid-layout {
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    gap: 40px;
+    margin-top: 16px;
+}
+
+@media (max-width: 900px) {
+    .detail-grid-layout { grid-template-columns: 1fr; }
+}
+
+/* Left Column Media Deck Graphics Layout */
+.detail-main-hero-img {
+    width: 100%;
+    height: 380px;
+    object-fit: cover;
+    border-radius: 20px;
+    border: 1px solid var(--border-color);
+    box-shadow: 0 12px 30px rgba(0,0,0,0.15);
+}
+
+.detail-gallery-row {
+    display: flex;
+    gap: 12px;
+    margin-top: 16px;
+}
+
+.gallery-thumb {
+    width: 80px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 8px;
+    cursor: pointer;
+    border: 2px solid transparent;
+    opacity: 0.6;
+}
+
+.gallery-thumb.active, .gallery-thumb:hover {
+    opacity: 1;
+    border-color: var(--accent-primary);
+}
+
+/* Right Column Technical Specifications Info Layout Deck */
+.info-header-block h2 {
+    font-size: 2.2rem;
+    font-weight: 800;
+    color: var(--text-primary) !important;
+    margin-top: 8px;
+}
+
+.detail-genre-pill {
+    background-color: var(--accent-primary);
+    color: #ffffff !important;
+    font-size: 0.8rem;
+    font-weight: 700;
+    padding: 4px 12px;
+    border-radius: 20px;
+    text-transform: uppercase;
+}
+
+.studio-subtext {
+    color: var(--text-secondary);
+    margin-top: 4px;
+    font-size: 0.95rem;
+}
+
+/* Horizontal specifications parameters grid matrix banner */
+.meta-metrics-strip {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-color);
+    padding: 16px;
+    border-radius: 16px;
+    margin: 24px 0;
+}
+
+.strip-item h5 {
+    font-size: 0.7rem;
+    color: var(--text-secondary);
+    letter-spacing: 0.5px;
+    margin-bottom: 2px;
+}
+
+.strip-item p {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.price-highlight {
+    color: var(--success) !important;
+}
+
+.detail-description-box h3, .detail-comments-section h3 {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 8px;
+}
+
+.detail-description-box p {
+    color: var(--text-secondary);
+    line-height: 1.6;
+    font-size: 0.95rem;
+}
+
+/* Real-time styled interaction components comments system logs container node */
+.detail-comments-section {
+    margin-top: 32px;
+    padding-top: 24px;
+    border-top: 1px solid var(--border-color);
+}
+
+.comments-stream {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.user-comment-node {
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-color);
+    padding: 12px 16px;
+    border-radius: 12px;
+}
+
+.user-comment-node strong {
+    font-size: 0.85rem;
+    color: var(--accent-primary);
+}
+
+.user-comment-node p {
+    font-size: 0.9rem;
+    color: var(--text-primary);
+    margin-top: 2px;
+}
+
+.add-comment-field-group {
+    display: flex;
+    gap: 12px;
+}
+
+.comment-input {
+    flex-grow: 1;
+}
+
+/* ==========================================================================
+   BULLETPROOF FULL-SCREEN OVERLAY ENGINE OVERRIDES
+   ========================================================================== */
+.game-detail-overlay {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important; /* Changed from 260px to 0 to bypass structural layout constraints */
+    width: 100% !important;
+    height: 100vh !important;
+    background-color: var(--bg-main) !important;
+    z-index: 99999 !important; /* Forces it to sit above sidebars and headers completely */
+    overflow-y: auto !important;
+    transform: translateX(100%) !important;
+    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+.game-detail-overlay.active {
+    transform: translateX(0) !important;
+}
+
+/* Final premium polish for the checkout action button inside catalog view cards */
+.game-card-footer .btn-add-cart {
+    padding: 8px 16px !important;
+    font-size: 0.85rem !important;
+    font-weight: 600 !important;
+    border-radius: 8px !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 6px !important;
+    border: none !important;
+    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.2) !important;
+    transition: background-color 0.2s, transform 0.2s !important;
+}
+
+.game-card-footer .btn-add-cart:hover {
+    background-color: var(--accent-hover) !important;
+    transform: scale(1.03) !important;
+}
+
+/* ==========================================================================
+   GLOBAL CUSTOM NOTIFICATION MODAL - THEME-AWARE DYNAMIC DESIGN
+   ========================================================================== */
+
+#globalNotificationModal {
+    /* Uses theme-specific backdrop color masking variables */
+    background: var(--bg-sidebar, rgba(10, 14, 23, 0.75)) !important;
+    background-color: cubic-bezier(0.4, 0, 0.2, 1);
+    backdrop-filter: blur(12px) !important;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.25s ease-in-out;
+}
+
+/* Auto-fade layout animation trigger mapping */
+#globalNotificationModal[style*="display: flex"] {
+    opacity: 1 !important;
+}
+
+/* Dynamic theme tracking card wrapper container */
+#globalNotificationModal > div {
+    /* Uses your system's exact card backgrounds and borders dynamically */
+    background: var(--bg-card, #11111b) !important; 
+    border: 1px solid var(--border-color, rgba(255, 255, 255, 0.08)) !important;
+    border-radius: 16px !important;
+    padding: 32px !important;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5), 
+                0 0 40px rgba(99, 102, 241, 0.03) !important;
+    transform: scale(0.92);
+    width: 90%;
+    max-width: 400px;
+    animation: popupScaleIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+/* Text Typography Variable Adapters */
+#modalMessageText {
+    font-family: 'Inter', sans-serif !important;
+    color: var(--text-primary, #e4e4e7) !important; /* Dynamically tracks light/dark text colors! */
+    font-size: 1rem !important;
+    font-weight: 500 !important;
+    line-height: 1.6 !important;
+    margin-bottom: 24px !important;
+}
+
+/* Close Button Interactions */
+#modalCloseBtn {
+    font-family: 'Inter', sans-serif !important;
+    font-size: 0.9rem !important;
+    font-weight: 600 !important;
+    letter-spacing: 0.3px !important;
+    padding: 12px 28px !important;
+    border-radius: 10px !important;
+    border: none !important;
+    cursor: pointer !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+    transition: transform 0.2s cubic-bezier(0.2, 0.8, 0.2, 1), 
+                filter 0.2s ease, 
+                box-shadow 0.2s ease !important;
+}
+
+#modalCloseBtn:hover {
+    transform: translateY(-2px) !important;
+    filter: brightness(1.1);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25) !important;
+}
+
+#modalCloseBtn:active {
+    transform: translateY(0px) !important;
+}
+
+/* Light-Theme Explicit Overrides (If variables require manual fallback tune-up mapping) */
+.light-theme #globalNotificationModal {
+    background: rgba(255, 255, 255, 0.6) !important;
+}
+.light-theme #globalNotificationModal > div {
+    background: #ffffff !important;
+    border: 1px solid rgba(0, 0, 0, 0.06) !important;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.12) !important;
+}
+
+/* Entrance Physics */
+@keyframes popupScaleIn {
+    to {
+        transform: scale(1);
+    }
+}

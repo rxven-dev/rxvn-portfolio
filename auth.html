@@ -190,9 +190,13 @@
                 return;
             }
 
-            // Root profile override handler logic
-            if (email === "admin@gamevantage.com" && password === "admin123") {
-                const rootSession = { name: "Adrian Cllnro", email: "admin@gamevantage.com", avatar: null };
+            // Universal Developer Demo / Master Account Override Handler Logic
+            if ((email === "admin@gamevantage.com" && password === "admin123") || 
+                (email === "dev.crxvengs@gmail.com" && password === "admin123")) {
+                
+                const masterSessionName = email === "admin@gamevantage.com" ? "Adrian Cllnro" : "New Publisher";
+                const rootSession = { name: masterSessionName, email: email, avatar: null };
+                
                 localStorage.setItem('activeSessionUser', JSON.stringify(rootSession));
                 authAlert.className = "alert-msg alert-success";
                 authAlert.innerText = "Terminal Authorized. Accessing environment framework...";
@@ -226,7 +230,7 @@
             const password = document.getElementById("signUpPassword").value;
 
             let systemUsers = JSON.parse(localStorage.getItem('systemUsers')) || [];
-            if (email === "admin@gamevantage.com" || systemUsers.some(u => u.email === email)) {
+            if (email === "admin@gamevantage.com" || email === "dev.crxvengs@gmail.com" || systemUsers.some(u => u.email === email)) {
                 authAlert.className = "alert-msg alert-danger";
                 authAlert.innerText = "Security Halt: This corporate email is already assigned.";
                 authAlert.style.display = "block";

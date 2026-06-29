@@ -22,6 +22,78 @@
             display: inline-block;
             vertical-align: middle;
         }
+
+        /* --- MOBILE LAYOUT RESPONSIVE FIXES --- */
+        @media (max-width: 768px) {
+            .dashboard-wrapper {
+                display: flex !important;
+                flex-direction: column !important;
+                min-height: 100vh;
+            }
+            .sidebar {
+                width: 100% !important;
+                height: auto !important;
+                min-height: auto !important;
+                position: static !important;
+                padding: 16px !important;
+            }
+            .sidebar-menu {
+                display: flex !important;
+                flex-wrap: wrap !important;
+                gap: 6px !important;
+                margin: 16px 0 !important;
+            }
+            .menu-item {
+                flex: 1 1 calc(50% - 6px) !important;
+                padding: 10px !important;
+                font-size: 0.85rem !important;
+                justify-content: flex-start !important;
+            }
+            .main-content {
+                width: 100% !important;
+                margin-left: 0 !important;
+                padding: 12px !important;
+            }
+            .topbar {
+                flex-direction: column !important;
+                height: auto !important;
+                gap: 12px !important;
+                padding-bottom: 16px !important;
+                border-bottom: 1px solid var(--border-color);
+            }
+            .search-bar, .topbar-actions {
+                width: 100% !important;
+            }
+            .topbar-actions {
+                justify-content: space-between !important;
+            }
+            .metrics-grid {
+                grid-template-columns: 1fr !important;
+                gap: 16px !important;
+            }
+            /* Stacks side-by-side flex or inline grid segments on fields automatically */
+            div[style*="display: grid"], div[style*="grid-template-columns"] {
+                grid-template-columns: 1fr !important;
+                gap: 16px !important;
+            }
+            .welcome-banner {
+                padding: 20px !important;
+                flex-direction: column !important;
+                gap: 12px !important;
+                align-items: start !important;
+            }
+            .welcome-banner h1 {
+                font-size: 1.4rem !important;
+            }
+            /* Alignment for save configurations buttons row elements */
+            div[style*="justify-content: flex-end"] {
+                justify-content: center !important;
+            }
+            #saveProfileSettingsBtn {
+                width: 100% !important;
+                justify-content: center !important;
+            }
+        }
     </style>
 </head>
 <body>
@@ -472,7 +544,6 @@
         </div>
     </div>
 
-    html
     <div id="globalNotificationModal" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 999999;">
         <div style="text-align: center;">
             <div id="modalIconContainer" style="font-size: 3.5rem; margin-bottom: 16px; display: flex; align-items: center; justify-content: center;">
@@ -503,21 +574,17 @@
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             // --- AUTHENTICATION REDIRECT GATE & SESSION INITIALIZATION ---
-            // Declared ONLY ONCE here to prevent redeclaration crashes
             let activeUser = JSON.parse(localStorage.getItem('activeSessionUser'));
             
-            // If there's no active profile session detected in memory, instantly kick out to login
             if (!activeUser || !activeUser.email) {
                 window.location.href = "auth.html";
-                return; // Cease execution immediately
+                return; 
             }
 
-            // Fallback to empty object if properties are missing, without redeclaring variable
             if (!activeUser) activeUser = {};
 
             const SIX_DAYS_MS = 6 * 24 * 60 * 60 * 1000;
             
-            // Modern default SVG user icon graphic placeholder
             let defaultPfp = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%239ca3af'><path d='M4 22C4 17.5817 7.58172 14 12 14C16.4183 14 20 17.5817 20 22H4ZM12 13C8.68528 13 6 10.3147 6 7C6 3.68528 8.68528 1 12 1C15.3147 1 18 3.68528 18 7C18 10.3147 15.3147 13 12 13Z'></path></svg>";
             let temporaryAvatarBase64 = activeUser.avatar || defaultPfp;
             let cropperInstance = null; 
@@ -538,13 +605,11 @@
             const btnCancelCrop = document.getElementById('btnCancelCrop');
             const btnApplyCrop = document.getElementById('btnApplyCrop');
 
-            // Toggle Switches Targets
             const statusToggle = document.getElementById('toggle-status');
             const themeToggle = document.getElementById('toggle-theme');
             const emailToggle = document.getElementById('toggle-emails');
             const statusDot = document.getElementById('sidebarStatusDot');
 
-            // Helper preferences layout maps
             const getPreference = (key, defaultVal) => {
                 const item = localStorage.getItem(`pref_${key}`);
                 return item !== null ? JSON.parse(item) : defaultVal;
@@ -554,7 +619,6 @@
                 localStorage.setItem(`pref_${key}`, JSON.stringify(value));
             };
 
-            // Define status and theme view functions first to avoid runtime crashes
             function updateStatusDot(isActive) {
                 if (!statusDot) return;
                 statusDot.style.background = isActive ? '#10b981' : '#9ca3af';
@@ -571,7 +635,6 @@
                 }
             }
 
-            // Map Saved States Over Controls smoothly
             const isStatusActive = getPreference('active_status', true);
             const isDarkMode = getPreference('dark_mode', true);
             const isEmailActive = getPreference('email_logs', false);
@@ -583,7 +646,6 @@
             updateStatusDot(isStatusActive);
             updateThemeView(isDarkMode);
 
-            // System Runtime Switch Events Binding
             if (statusToggle) {
                 statusToggle.addEventListener('change', (e) => {
                     updateStatusDot(e.target.checked);
@@ -602,7 +664,6 @@
                 });
             }
 
-            // --- ADMIN ACCESS CONTROL SYSTEM ---
             const registerGameBtn = document.getElementById('openRegisterGameModalBtn');
             if (registerGameBtn) {
                 if (activeUser && activeUser.email === "dev.crxvengs@gmail.com") {
@@ -612,7 +673,6 @@
                 }
             }
 
-            // Dynamically synchronize username registry variables
             let displayUsername = "New Publisher";
             if (activeUser && activeUser.name) {
                 displayUsername = activeUser.name.replace(/<[^>]*>/g, '').trim();
@@ -626,7 +686,6 @@
             if (sidebarUsernameText) sidebarUsernameText.innerHTML = cleanSidebarName;
             if (profileHeaderNameDisplay) profileHeaderNameDisplay.innerHTML = cleanSidebarName;
             
-            // Synchronize active registered account email string maps
             if (activeUser && activeUser.email) {
                 if (settingsEmailInput) settingsEmailInput.value = activeUser.email;
             } else {
@@ -636,7 +695,6 @@
             if (settingsAvatarPreview) settingsAvatarPreview.src = temporaryAvatarBase64;
             if (sidebarUserAvatarImg) sidebarUserAvatarImg.src = temporaryAvatarBase64;
 
-            // Image Crop Input Handling Systems
             if (avatarUploadInput) {
                 avatarUploadInput.addEventListener('change', (e) => {
                     const file = e.target.files[0];
@@ -689,7 +747,6 @@
                 });
             }
 
-            // Save Profiles Changes Framework
             if (saveProfileSettingsBtn) {
                 saveProfileSettingsBtn.addEventListener('click', (e) => {
                     e.preventDefault();
@@ -724,7 +781,6 @@
                         activeUser.lastUsernameChange = currentTime;
                     }
 
-                    // Save settings explicitly to local registry
                     savePreference('active_status', statusToggle ? statusToggle.checked : true);
                     savePreference('dark_mode', themeToggle ? themeToggle.checked : true);
                     savePreference('email_logs', emailToggle ? emailToggle.checked : false);

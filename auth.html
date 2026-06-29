@@ -178,6 +178,7 @@
         }
         window.addEventListener('DOMContentLoaded', generateNewCaptcha);
 
+        // --- SYNCHRONIZED DASHBOARD TERMINAL LOGIN HANDLER ---
         loginForm.addEventListener("submit", async function(e) {
             e.preventDefault();
             
@@ -198,6 +199,7 @@
             authAlert.innerText = "Connecting to global node database... Checking authorization.";
             authAlert.style.display = "block";
 
+            // Hardcoded Master Admin bypass checks
             if ((email === "admin@gamevantage.com" && password === "admin123") || 
                 (email === "dev.crxvengs@gmail.com" && password === "admin123")) {
                 
@@ -212,6 +214,7 @@
             }
 
             try {
+                // Halts process here until the database payload finishes downloading completely to prevent rapid red-green banner flashing
                 let systemUsers = await fetchCloudUsers();
                 const matchedUser = systemUsers.find(user => user.email === email && user.password === password);
 
@@ -236,6 +239,7 @@
             }
         });
 
+        // --- REGISTER HANDLER ---
         signUpForm.addEventListener("submit", async function(e) {
             e.preventDefault();
             const name = document.getElementById("signUpName").value.trim();
@@ -246,43 +250,50 @@
             authAlert.innerText = "Validating database indices... Please hold.";
             authAlert.style.display = "block";
 
-            let systemUsers = await fetchCloudUsers();
+            try {
+                let systemUsers = await fetchCloudUsers();
 
-            if (email === "admin@gamevantage.com" || email === "dev.crxvengs@gmail.com" || systemUsers.some(u => u.email === email)) {
-                authAlert.className = "alert-msg alert-danger";
-                authAlert.innerText = "Security Halt: This corporate email is already assigned.";
-                authAlert.style.display = "block";
-                return;
-            }
-
-            expectedVerificationPin = Math.floor(1000 + Math.random() * 9000).toString();
-            temporaryRegistrationCache = { name, email, password, avatar: null };
-
-            authAlert.className = "alert-msg alert-success";
-            authAlert.innerText = "Contacting Mail Server. Please hold...";
-            authAlert.style.display = "block";
-
-            const templateParams = {
-                to_name: name,
-                to_email: email,
-                verification_code: expectedVerificationPin,
-                reply_to: "support@gamevantage.com"
-            };
-
-            emailjs.send("service_zkre1sb", "template_2qlbqr2", templateParams)
-                .then(() => {
-                    authAlert.style.display = "none";
-                    verificationModal.style.display = "flex";
-                })
-                .catch((error) => {
-                    console.error("EmailJS Error:", error);
+                if (email === "admin@gamevantage.com" || email === "dev.crxvengs@gmail.com" || systemUsers.some(u => u.email === email)) {
                     authAlert.className = "alert-msg alert-danger";
-                    authAlert.innerText = "Mail Dispatch Failed. Check system API configs.";
+                    authAlert.innerText = "Security Halt: This corporate email is already assigned.";
                     authAlert.style.display = "block";
-                });
+                    return;
+                }
+
+                expectedVerificationPin = Math.floor(1000 + Math.random() * 9000).toString();
+                temporaryRegistrationCache = { name, email, password, avatar: null };
+
+                authAlert.className = "alert-msg alert-success";
+                authAlert.innerText = "Contacting Mail Server. Please hold...";
+                authAlert.style.display = "block";
+
+                const templateParams = {
+                    to_name: name,
+                    to_email: email,
+                    verification_code: expectedVerificationPin,
+                    reply_to: "support@gamevantage.com"
+                };
+
+                emailjs.send("service_zkre1sb", "template_2qlbqr2", templateParams)
+                    .then(() => {
+                        authAlert.style.display = "none";
+                        verificationModal.style.display = "flex";
+                    })
+                    .catch((error) => {
+                        console.error("EmailJS Error:", error);
+                        authAlert.className = "alert-msg alert-danger";
+                        authAlert.innerText = "Mail Dispatch Failed. Check system API configs.";
+                        authAlert.style.display = "block";
+                    });
+            } catch (err) {
+                console.error(err);
+                authAlert.className = "alert-msg alert-danger";
+                authAlert.innerText = "Database connection error. Unable to perform index check.";
+                authAlert.style.display = "block";
+            }
         });
 
-        // --- VERIFICATION CONFIRMATION TRIGGERS ---
+        // --- VERIFICATION DIALOG SUBMIT TRIGGERS ---
         document.getElementById("btnVerifyCode").addEventListener("click", async () => {
             const enteredCode = document.getElementById("emailCodeInput").value.trim();
 
@@ -292,7 +303,7 @@
                 authAlert.style.display = "block";
                 verificationModal.style.display = "none";
 
-                // Uses your separated file function to append the user payload securely to the cloud matrix
+                // Securely appends the brand new registration data object structure to your JSON Storage matrix file
                 const success = await registerNewCloudUser(temporaryRegistrationCache);
                 
                 if (success) {
@@ -302,6 +313,7 @@
                 } else {
                     authAlert.className = "alert-msg alert-danger";
                     authAlert.innerText = "Database error syncing record. Please check your network connection.";
+                    authAlert.style.display = "block";
                 }
             } else {
                 alert("Security Code Mismatch. Please check your verification digits and retry.");

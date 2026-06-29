@@ -138,12 +138,10 @@
         </div>
     </div>
 
+    <script src="assets/js/user-db.js"></script>
+    
     <script>
         emailjs.init("owB2XT75OBCwbGap4");
-
-        // --- GLOBAL CENTRAL DATABASE SETUP ---
-        // Change "gamerack_prod_unique_bucket" to any unique name you want for your app's database storage
-        const CLOUD_DB_URL = "https://kvdb.io/MN86yFwZ3q2g6YpL9qWvj7/gamerack_users_list";
 
         let correctCaptchaCode = "";
         let expectedVerificationPin = "";
@@ -154,34 +152,6 @@
         const signUpForm = document.getElementById("signUpForm");
         const gatewaySubtitle = document.getElementById("gatewaySubtitle");
         const verificationModal = document.getElementById("verificationModal");
-
-        // Helper function to fetch user registry array from the central cloud database
-        async function fetchCloudUsers() {
-            try {
-                const response = await fetch(CLOUD_DB_URL);
-                if (!response.ok) return [];
-                const data = await response.json();
-                return Array.isArray(data) ? data : [];
-            } catch (err) {
-                console.error("Cloud Database Read Error:", err);
-                return [];
-            }
-        }
-
-        // Helper function to update the central user array list on the cloud database
-        async function saveCloudUsers(usersArray) {
-            try {
-                await fetch(CLOUD_DB_URL, {
-                    method: 'POST',
-                    body: JSON.stringify(usersArray),
-                    headers: { 'Content-Type': 'application/json' }
-                });
-                return true;
-            } catch (err) {
-                console.error("Cloud Database Write Error:", err);
-                return false;
-            }
-        }
 
         document.getElementById("linkToSignUp").addEventListener("click", () => {
             authAlert.style.display = "none";
@@ -224,7 +194,6 @@
                 return;
             }
 
-            // Show checking status loading message
             authAlert.className = "alert-msg alert-success";
             authAlert.innerText = "Connecting to global node database... Checking authorization.";
             authAlert.style.display = "block";
@@ -242,12 +211,11 @@
                 return;
             }
 
-            // Fetch users cleanly from cloud system database
+            // Calls the separated file to pull live user registry arrays
             let systemUsers = await fetchCloudUsers();
             const matchedUser = systemUsers.find(user => user.email === email && user.password === password);
 
             if (matchedUser) {
-                // Keep activeSessionUser local only to keep track of who is active on this browser!
                 localStorage.setItem('activeSessionUser', JSON.stringify(matchedUser));
                 authAlert.className = "alert-msg alert-success";
                 authAlert.innerText = "Terminal Authorized. Accessing environment framework...";
@@ -316,11 +284,10 @@
                 authAlert.style.display = "block";
                 verificationModal.style.display = "none";
 
-                // Read live user array list first
                 let systemUsers = await fetchCloudUsers();
                 systemUsers.push(temporaryRegistrationCache);
                 
-                // Securely save back up to our cloud file
+                // Calls the separated file function to update database
                 const success = await saveCloudUsers(systemUsers);
                 
                 if (success) {

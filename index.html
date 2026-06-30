@@ -47,10 +47,14 @@
         <div class="main-content">
             
             <header class="topbar">
-                <div class="search-bar">
-                    <i class="ri-search-2-line"></i>
-                    <input type="text" placeholder="Search Games">
-                </div>
+    <button id="mobileMenuToggleBtn" class="mobile-menu-btn" style="display: none;">
+        <i class="ri-menu-line"></i>
+    </button>
+
+    <div class="search-bar">
+        <i class="ri-search-2-line"></i>
+        <input type="text" placeholder="Search Games">
+    </div>
                 
                 <div class="topbar-actions" style="display: flex; align-items: center; gap: 16px;">
                     
@@ -550,6 +554,28 @@
                     if (settingsEmailInput) settingsEmailInput.value = user.email;
                 }
             });
+
+            // --- MOBILE NAV DRAWER INTERACTIVE LOGIC MATRIX ---
+const mobileBtn = document.getElementById('mobileMenuToggleBtn');
+const sidebarEl = document.querySelector('.sidebar');
+const mainContentEl = document.querySelector('.main-content');
+
+if (mobileBtn && sidebarEl) {
+    // Open/Close sidebar drawer when clicking the 3 lines button
+    mobileBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        sidebarEl.classList.toggle('mobile-open');
+    });
+
+    // Automatically slide drawer shut if the user clicks anywhere on the main layout screen area
+    if (mainContentEl) {
+        mainContentEl.addEventListener('click', () => {
+            if (sidebarEl.classList.contains('mobile-open')) {
+                sidebarEl.classList.remove('mobile-open');
+            }
+        });
+    }
+}
 
             // Connect Firebase closure parameters into the layout's active Sign Out action buttons
             const signoutBtn = document.getElementById('systemSignOutBtn');

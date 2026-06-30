@@ -449,11 +449,12 @@ footer {
 
 /* --- MOBILE LAYOUT PERSISTENCE MATRIX --- */
 @media (max-width: 768px) {
-    /* 1. FORCE THE SIDEBAR GOING ALL THE WAY DOWN */
-    body, html {
+    /* Set core viewport wrappers to lock layout calculation planes */
+    html, body {
         height: 100% !important;
         margin: 0;
         padding: 0;
+        overflow: hidden !important; /* Prevents the whole browser screen from scrolling */
     }
 
     .dashboard-wrapper {
@@ -461,37 +462,51 @@ footer {
         flex-direction: row !important;
         align-items: stretch !important;
         width: 100% !important;
-        min-height: 100vh !important; /* Forces the entire layout wrapper to occupy full screen height */
-        overflow-x: hidden !important;
+        height: 100vh !important; /* Locks entire setup container to strict device height screen boundaries */
+        overflow: hidden !important;
     }
 
+    /* --- SIDEBAR PERSISTENCE LONG LOCK --- */
     .sidebar {
         width: 125px !important;
         min-width: 125px !important;
-        height: 100vh !important; /* Keeps sidebar locked to full height */
-        position: sticky !important;
-        top: 0 !important;
+        height: 100vh !important; /* Forces sidebar column to remain perfectly long to the bottom */
+        position: relative !important;
         display: flex !important;
         flex-direction: column !important;
-        justify-content: space-between !important; /* Pushes user-avatar footer to the absolute bottom */
+        justify-content: space-between !important;
         padding: 12px 6px !important;
         box-sizing: border-box !important;
+        background-color: var(--bg-card) !important; /* Ensures visual block continuity matches your drawing */
+        z-index: 10 !important;
     }
 
-    /* 2. BLOCK MOBILE AUTOMATIC ZOOM-IN ON INPUT SELECTION */
-    .custom-theme-input, 
-    .search-bar input,
-    select {
-        font-size: 16px !important; /* 16px is the magical limit that stops iOS/Android from forcing a zoom */
-        transform: scale(0.85) !important; /* Scales it down visually so it looks matching and small */
-        transform-origin: left center !important; /* Prevents text alignment shifting */
-        width: 117% !important; /* Counteracts the scale shrinkage width loss */
+    /* --- SCROLLABLE MAIN CONTENT PROFILE ENGINE --- */
+    .main-content {
+        flex: 1 !important;
+        width: calc(100% - 125px) !important;
+        height: 100vh !important; /* Constrains boundaries to visible viewport areas */
+        overflow-y: auto !important; /* This creates an isolated scroll path for profile content only */
+        padding: 12px !important;
+        box-sizing: border-box !important;
+        -webkit-overflow-scrolling: touch !important; /* Smooth touch inertia parameters for mobile web views */
     }
-    
+
+    /* Keep side-by-side card grid matrix integrity */
     .content-container div[style*="display: grid"], 
     .content-container div[style*="grid-template-columns"] {
         display: grid !important;
         grid-template-columns: repeat(2, 1fr) !important;
         gap: 12px !important;
+    }
+
+    /* Block input scale shifts (Zoom Fix) */
+    .custom-theme-input, 
+    .search-bar input,
+    select {
+        font-size: 16px !important;
+        transform: scale(0.85) !important;
+        transform-origin: left center !important;
+        width: 117% !important;
     }
 }

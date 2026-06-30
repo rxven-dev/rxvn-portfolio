@@ -448,63 +448,50 @@ footer {
 @keyframes toastSlideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
 
 /* --- MOBILE LAYOUT PERSISTENCE MATRIX --- */
-        @media (max-width: 768px) {
-            html, body {
-                font-size: 11px !important; /* Baseline system scale compression */
-            }
-            .dashboard-wrapper {
-                display: flex !important;
-                flex-direction: row !important; /* Locks desktop sidebar side-by-side view */
-                align-items: stretch !important;
-                width: 100% !important;
-                overflow-x: hidden !important;
-            }
-            .sidebar {
-                width: 125px !important; /* Compact design footprint */
-                min-width: 125px !important;
-                height: 100vh !important;
-                position: sticky !important;
-                top: 0 !important;
-                padding: 12px 6px !important;
-            }
-            .sidebar-brand {
-                font-size: 0.9rem !important;
-                margin-bottom: 16px !important;
-                gap: 4px !important;
-            }
-            .menu-item {
-                padding: 8px 6px !important;
-                font-size: 0.7rem !important;
-                gap: 6px !important;
-            }
-            .sidebar-footer .user-avatar {
-                width: 26px !important;
-                height: 26px !important;
-            }
-            .main-content {
-                flex: 1 !important;
-                width: calc(100% - 125px) !important;
-                margin-left: 0 !important;
-                padding: 12px !important;
-                overflow-x: hidden !important;
-            }
-            
-            /* --- THE FIX: Maintain Desktop Side-by-Side Cards on Mobile --- */
-            .content-container div[style*="display: grid"], 
-            .content-container div[style*="grid-template-columns"] {
-                display: grid !important;
-                grid-template-columns: repeat(2, 1fr) !important; /* Force 2 columns side-by-side instead of stacking */
-                gap: 12px !important;
-            }
+@media (max-width: 768px) {
+    /* 1. FORCE THE SIDEBAR GOING ALL THE WAY DOWN */
+    body, html {
+        height: 100% !important;
+        margin: 0;
+        padding: 0;
+    }
 
-            /* Adjust single forms or inner inputs so they don't break boundaries */
-            .metric-card {
-                padding: 14px !important;
-                border-radius: 10px !important;
-            }
-            .custom-theme-input {
-                padding: 6px 10px !important;
-                font-size: 0.85rem !important;
-                height: 36px !important;
-            }
-        }
+    .dashboard-wrapper {
+        display: flex !important;
+        flex-direction: row !important;
+        align-items: stretch !important;
+        width: 100% !important;
+        min-height: 100vh !important; /* Forces the entire layout wrapper to occupy full screen height */
+        overflow-x: hidden !important;
+    }
+
+    .sidebar {
+        width: 125px !important;
+        min-width: 125px !important;
+        height: 100vh !important; /* Keeps sidebar locked to full height */
+        position: sticky !important;
+        top: 0 !important;
+        display: flex !important;
+        flex-direction: column !important;
+        justify-content: space-between !important; /* Pushes user-avatar footer to the absolute bottom */
+        padding: 12px 6px !important;
+        box-sizing: border-box !important;
+    }
+
+    /* 2. BLOCK MOBILE AUTOMATIC ZOOM-IN ON INPUT SELECTION */
+    .custom-theme-input, 
+    .search-bar input,
+    select {
+        font-size: 16px !important; /* 16px is the magical limit that stops iOS/Android from forcing a zoom */
+        transform: scale(0.85) !important; /* Scales it down visually so it looks matching and small */
+        transform-origin: left center !important; /* Prevents text alignment shifting */
+        width: 117% !important; /* Counteracts the scale shrinkage width loss */
+    }
+    
+    .content-container div[style*="display: grid"], 
+    .content-container div[style*="grid-template-columns"] {
+        display: grid !important;
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 12px !important;
+    }
+}

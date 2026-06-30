@@ -396,7 +396,7 @@
                          <div style="border-top: 1px solid var(--border-color); padding-top: 20px;">
                             <p style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 12px;">Active Session Management:</p>
             
-                            <button class="btn" onclick="window.showCustomPopup('Your developer session has been safely closed. Terminating terminal authentication layers...', 'danger', () => { window.location.href='auth.html'; });" style="background-color: var(--danger); color: white; display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                            <button class="btn" id="systemSignOutBtn" style="background-color: var(--danger); color: white; display: flex; align-items: center; gap: 8px; cursor: pointer;">
                                 <i class="ri-logout-box-r-line"></i> Sign Out
                             </button>
                          </div>
@@ -610,17 +610,86 @@
     <script src="assets/js/add-cart.js"></script>
     <script src="assets/js/close-popup.js"></script>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            // --- AUTHENTICATION REDIRECT GATE & SESSION INITIALIZATION ---
-            let activeUser = JSON.parse(localStorage.getItem('activeSessionUser'));
-            
-            if (!activeUser || !activeUser.email) {
-                window.location.href = "auth.html";
-                return; 
-            }
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getAuth, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
-            if (!activeUser) activeUser = {};
+        // Your Central Firebase Configurations
+        const firebaseConfig = {
+            apiKey: "AIzaSyBYGpq7jtEhnYIfQw1xqcEEu0NfkQuceCU",
+            authDomain: "my-central-auth.firebaseapp.com",
+            projectId: "my-central-auth",
+            storageBucket: "my-central-auth.firebasestorage.app",
+            messagingSenderId: "623323853491",
+            appId: "1:623323853491:web:ab61e37cfc7193d17476c6",
+            measurementId: "G-3GT0ESLCX9"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- AUTHENTICATION REDIRECT GATE & SECURE SESSION MONITOR ---
+            let activeUser = JSON.parse(localStorage.getItem('activeSessionUser')) || {};
+
+            onAuthStateChanged(auth, (user) => {
+                if (!user) {
+                    // Wipes cached elements and moves to validation screen immediately
+                    localStorage.removeItem('activeSessionUser');
+                    window.location.href = "auth.html";
+                } else {
+                    // Coordinates local tracking cache rules safely
+                    if (!activeUser.email) {
+                        activeUser.email = user.email;
+                        activeUser.name = user.displayName || user.email.split('@')[0];
+                        localStorage.setItem('activeSessionUser', JSON.stringify(activeUser));
+                    }
+                    
+                    // Toggle admin catalog registration visibility rules natively
+                    const registerGameBtn = document.getElementById('openRegisterGameModalBtn');
+                    if (registerGameBtn) {
+                        if (user.email === "dev.crxvengs@gmail.com") {
+                            registerGameBtn.style.display = "inline-flex";
+                        } else {
+                            registerGameBtn.style.display = "none";
+                        }
+                    }
+
+                    // Setup user configuration identities matching account states
+                    let displayUsername = "New Publisher";
+                    if (activeUser && activeUser.name) {
+                        displayUsername = activeUser.name.replace(/<[^>]*>/g, '').trim();
+                    } else if (user.email) {
+                        displayUsername = user.email.split('@')[0];
+                    }
+
+                    const cleanSidebarName = displayUsername.includes('ri-git-fork-fill') ? displayUsername : `<i class="ri-git-fork-fill"></i> ${displayUsername}`;
+                    
+                    if (settingsUsernameInput) settingsUsernameInput.value = displayUsername.replace(/<[^>]*>/g, '');
+                    if (sidebarUsernameText) sidebarUsernameText.innerHTML = cleanSidebarName;
+                    if (profileHeaderNameDisplay) profileHeaderNameDisplay.innerHTML = cleanSidebarName;
+                    
+                    if (settingsEmailInput) settingsEmailInput.value = user.email;
+                }
+            });
+
+            // Connect Firebase closure parameters into the layout's active Sign Out action buttons
+            const signoutBtn = document.getElementById('systemSignOutBtn');
+            if (signoutBtn) {
+                signoutBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    window.showCustomPopup('Your developer session has been safely closed. Terminating terminal authentication layers...', 'danger', async () => {
+                        try {
+                            localStorage.removeItem('activeSessionUser');
+                            await signOut(auth);
+                            window.location.href = 'auth.html';
+                        } catch (err) {
+                            console.error("Signout error:", err);
+                            window.location.href = 'auth.html';
+                        }
+                    });
+                });
+            }
 
             const SIX_DAYS_MS = 6 * 24 * 60 * 60 * 1000;
             
@@ -701,34 +770,6 @@
                 emailToggle.addEventListener('change', (e) => {
                     savePreference('email_logs', e.target.checked);
                 });
-            }
-
-            const registerGameBtn = document.getElementById('openRegisterGameModalBtn');
-            if (registerGameBtn) {
-                if (activeUser && activeUser.email === "dev.crxvengs@gmail.com") {
-                    registerGameBtn.style.display = "inline-flex";
-                } else {
-                    registerGameBtn.style.display = "none";
-                }
-            }
-
-            let displayUsername = "New Publisher";
-            if (activeUser && activeUser.name) {
-                displayUsername = activeUser.name.replace(/<[^>]*>/g, '').trim();
-            } else if (activeUser && activeUser.email) {
-                displayUsername = activeUser.email.split('@')[0];
-            }
-
-            const cleanSidebarName = displayUsername.includes('ri-git-fork-fill') ? displayUsername : `<i class="ri-git-fork-fill"></i> ${displayUsername}`;
-            
-            if (settingsUsernameInput) settingsUsernameInput.value = displayUsername.replace(/<[^>]*>/g, '');
-            if (sidebarUsernameText) sidebarUsernameText.innerHTML = cleanSidebarName;
-            if (profileHeaderNameDisplay) profileHeaderNameDisplay.innerHTML = cleanSidebarName;
-            
-            if (activeUser && activeUser.email) {
-                if (settingsEmailInput) settingsEmailInput.value = activeUser.email;
-            } else {
-                if (settingsEmailInput) settingsEmailInput.value = localStorage.getItem('userEmail') || "No active email found";
             }
             
             if (settingsAvatarPreview) settingsAvatarPreview.src = temporaryAvatarBase64;

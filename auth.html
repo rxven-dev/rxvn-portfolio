@@ -138,10 +138,26 @@
         </div>
     </div>
 
-    <script src="assets/js/user-db.js"></script>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, updateProfile, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
-    <script>
+        // Initialize EmailJS Configuration
         emailjs.init("owB2XT75OBCwbGap4");
+
+        // Your Central Firebase Configurations
+        const firebaseConfig = {
+            apiKey: "AIzaSyBYGpq7jtEhnYIfQw1xqcEEu0NfkQuceCU",
+            authDomain: "my-central-auth.firebaseapp.com",
+            projectId: "my-central-auth",
+            storageBucket: "my-central-auth.firebasestorage.app",
+            messagingSenderId: "623323853491",
+            appId: "1:623323853491:web:ab61e37cfc7193d17476c6",
+            measurementId: "G-3GT0ESLCX9"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
 
         let correctCaptchaCode = "";
         let expectedVerificationPin = "";
@@ -153,6 +169,7 @@
         const gatewaySubtitle = document.getElementById("gatewaySubtitle");
         const verificationModal = document.getElementById("verificationModal");
 
+        // View interface navigation switches
         document.getElementById("linkToSignUp").addEventListener("click", () => {
             authAlert.style.display = "none";
             loginForm.style.display = "none";
@@ -167,6 +184,7 @@
             gatewaySubtitle.innerText = "Secure Publisher Gateway Authorization";
         });
 
+        // Human Verification Captcha Creator
         function generateNewCaptcha() {
             const characters = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
             let result = '';
@@ -178,7 +196,14 @@
         }
         window.addEventListener('DOMContentLoaded', generateNewCaptcha);
 
-        // --- LOGIN PROCESSOR ---
+        // Global Active Session Sync State Monitoring
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                window.location.href = 'index.html';
+            }
+        });
+
+        // --- CLOUD PORTAL LOGIN CONTROLLER ---
         loginForm.addEventListener("submit", async function(e) {
             e.preventDefault();
             
@@ -199,49 +224,27 @@
             authAlert.innerText = "Connecting to global node database... Checking authorization.";
             authAlert.style.display = "block";
 
-            if ((email === "admin@gamevantage.com" && password === "admin123") || 
-                (email === "dev.crxvengs@gmail.com" && password === "admin123")) {
-                
-                const masterName = email === "admin@gamevantage.com" ? "Adrian Cllnro" : "New Publisher";
-                const rootSession = { name: masterName, email: email, avatar: null };
-                
-                localStorage.setItem('activeSessionUser', JSON.stringify(rootSession));
-                
+            try {
+                await signInWithEmailAndPassword(auth, email, password);
                 authAlert.innerText = "Terminal Authorized. Accessing environment framework...";
                 setTimeout(() => { window.location.href = 'index.html'; }, 1200);
-                return;
-            }
-
-            try {
-                if (typeof fetchCloudUsers !== "function") {
-                    throw new Error("Database helper file is missing or not loading properly.");
-                }
-
-                let systemUsers = await fetchCloudUsers();
-                const matchedUser = systemUsers.find(user => user.email === email && user.password === password);
-
-                if (matchedUser) {
-                    localStorage.setItem('activeSessionUser', JSON.stringify(matchedUser));
-                    authAlert.className = "alert-msg alert-success";
-                    authAlert.innerText = "Terminal Authorized. Accessing environment framework...";
-                    authAlert.style.display = "block";
-                    setTimeout(() => { window.location.href = 'index.html'; }, 1200);
-                } else {
-                    authAlert.className = "alert-msg alert-danger";
-                    authAlert.innerText = "Access Denied: Invalid configuration credential matrix pairing.";
-                    authAlert.style.display = "block";
-                    generateNewCaptcha();
-                    document.getElementById("captchaUserInput").value = "";
-                }
             } catch (err) {
-                console.error(err);
+                console.error("Firebase Auth Login Error:", err);
                 authAlert.className = "alert-msg alert-danger";
-                authAlert.innerText = "Network Gateway error. Failed to pool credential registry logs.";
+                
+                if (err.code === "auth/invalid-credential" || err.code === "auth/user-not-found" || err.code === "auth/wrong-password") {
+                    authAlert.innerText = "Access Denied: Invalid configuration credential matrix pairing.";
+                } else {
+                    authAlert.innerText = `Gateway Error: ${err.message}`;
+                }
+                
                 authAlert.style.display = "block";
+                generateNewCaptcha();
+                document.getElementById("captchaUserInput").value = "";
             }
         });
 
-        // --- SIGN UP PROCESSOR (FIXED TRY/CATCH WRAPPER) ---
+        // --- SIGN UP INTERFACE CONTROLLER (DISPATCH PIN VIA EMAILJS) ---
         signUpForm.addEventListener("submit", async function(e) {
             e.preventDefault();
             const name = document.getElementById("signUpName").value.trim();
@@ -249,83 +252,71 @@
             const password = document.getElementById("signUpPassword").value;
 
             authAlert.className = "alert-msg alert-success";
-            authAlert.innerText = "Validating database indices... Please hold.";
+            authAlert.innerText = "Validating cloud database mappings... Please hold.";
             authAlert.style.display = "block";
 
-            try {
-                if (typeof fetchCloudUsers !== "function") {
-                    throw new Error("Database helper file is missing or not loading properly.");
-                }
+            // Cache credentials temporarily until the PIN verification passes
+            expectedVerificationPin = Math.floor(1000 + Math.random() * 9000).toString();
+            temporaryRegistrationCache = { name, email, password };
 
-                let systemUsers = await fetchCloudUsers();
+            authAlert.innerText = "Contacting Mail Server. Dispatching profile validation pin...";
 
-                if (email === "admin@gamevantage.com" || email === "dev.crxvengs@gmail.com" || systemUsers.some(u => u.email === email)) {
+            const templateParams = {
+                to_name: name,
+                to_email: email,
+                verification_code: expectedVerificationPin,
+                reply_to: "support@gamevantage.com"
+            };
+
+            // Shoot off verification email using provided EmailJS credentials
+            emailjs.send("service_zkre1sb", "template_2qlbqr2", templateParams)
+                .then(() => {
+                    authAlert.style.display = "none";
+                    verificationModal.style.display = "flex";
+                })
+                .catch((error) => {
+                    console.error("EmailJS Service Failure:", error);
                     authAlert.className = "alert-msg alert-danger";
-                    authAlert.innerText = "Security Halt: This corporate email is already assigned.";
+                    authAlert.innerText = "Mail Dispatch Failed. Check system API configuration parameters.";
                     authAlert.style.display = "block";
-                    return;
-                }
-
-                expectedVerificationPin = Math.floor(1000 + Math.random() * 9000).toString();
-                temporaryRegistrationCache = { name, email, password, avatar: null };
-
-                authAlert.className = "alert-msg alert-success";
-                authAlert.innerText = "Contacting Mail Server. Please hold...";
-                authAlert.style.display = "block";
-
-                const templateParams = {
-                    to_name: name,
-                    to_email: email,
-                    verification_code: expectedVerificationPin,
-                    reply_to: "support@gamevantage.com"
-                };
-
-                emailjs.send("service_zkre1sb", "template_2qlbqr2", templateParams)
-                    .then(() => {
-                        authAlert.style.display = "none";
-                        verificationModal.style.display = "flex";
-                    })
-                    .catch((error) => {
-                        console.error("EmailJS Error:", error);
-                        authAlert.className = "alert-msg alert-danger";
-                        authAlert.innerText = "Mail Dispatch Failed. Check system API configs.";
-                        authAlert.style.display = "block";
-                    });
-
-            } catch (err) {
-                console.error("Signup validation crash:", err);
-                authAlert.className = "alert-msg alert-danger";
-                authAlert.innerText = "Database connection offline. Resetting local file pipeline.";
-                authAlert.style.display = "block";
-            }
+                });
         });
 
-        // --- PIN VERIFICATION PROCESSOR ---
+        // --- PIN VERIFICATION & FIREBASE ACCOUNT GENERATION ---
         document.getElementById("btnVerifyCode").addEventListener("click", async () => {
             const enteredCode = document.getElementById("emailCodeInput").value.trim();
 
             if (enteredCode === expectedVerificationPin) {
                 authAlert.className = "alert-msg alert-success";
-                authAlert.innerText = "Pin verified. Writing parameters into central cloud logs...";
+                authAlert.innerText = "Pin verified. Synchronizing credential attributes into cloud logs...";
                 authAlert.style.display = "block";
                 verificationModal.style.display = "none";
 
                 try {
-                    const success = await registerNewCloudUser(temporaryRegistrationCache);
+                    // PIN matches! Now officially write account into central Firebase DB
+                    const userCredential = await createUserWithEmailAndPassword(
+                        auth, 
+                        temporaryRegistrationCache.email, 
+                        temporaryRegistrationCache.password
+                    );
                     
-                    if (success) {
-                        localStorage.setItem('activeSessionUser', JSON.stringify(temporaryRegistrationCache));
-                        authAlert.innerText = "Profile Authorized! Booting interface parameters...";
-                        setTimeout(() => { window.location.href = 'index.html'; }, 1500);
-                    } else {
-                        authAlert.className = "alert-msg alert-danger";
-                        authAlert.innerText = "Database error syncing record. Please check your network connection.";
-                        authAlert.style.display = "block";
-                    }
+                    // Attach publisher name to profile settings token
+                    await updateProfile(userCredential.user, {
+                        displayName: temporaryRegistrationCache.name
+                    });
+
+                    authAlert.innerText = "Profile Authorized! Booting interface parameters...";
+                    setTimeout(() => { window.location.href = 'index.html'; }, 1500);
+
                 } catch (dbErr) {
-                    console.error("Write error:", dbErr);
+                    console.error("Firebase Node Sync Error:", dbErr);
                     authAlert.className = "alert-msg alert-danger";
-                    authAlert.innerText = "Critical database save failure.";
+                    
+                    if (dbErr.code === "auth/email-already-in-use") {
+                        authAlert.innerText = "Security Halt: This corporate email is already assigned.";
+                    } else {
+                        authAlert.innerText = `Database Registry Fault: ${dbErr.message}`;
+                    }
                     authAlert.style.display = "block";
                 }
             } else {

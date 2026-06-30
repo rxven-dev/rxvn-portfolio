@@ -888,8 +888,8 @@
                 });
             }
 
-            if (saveProfileSettingsBtn) {
-                saveProfileSettingsBtn.addEventListener('click', (e) => {
+if (saveProfileSettingsBtn) {
+                saveProfileSettingsBtn.addEventListener('click', async (e) => { // Added 'async' here
                     e.preventDefault();
                     
                     const rawUsername = settingsUsernameInput ? settingsUsernameInput.value.trim() : "";
@@ -929,30 +929,26 @@
                     activeUser.avatar = temporaryAvatarBase64;
                     localStorage.setItem('activeSessionUser', JSON.stringify(activeUser));
                     
-                    let systemUsers = JSON.parse(localStorage.getItem('systemUsers')) || [];
-                    const updatedUsers = systemUsers.map(user => {
-                        if (user.email === activeUser.email) {
-                            return { 
-                                ...user, 
-                                name: activeUser.name, 
-                                avatar: activeUser.avatar,
-                                lastUsernameChange: activeUser.lastUsernameChange || user.lastUsernameChange 
-                            };
-                        }
-                        return user;
-                    });
-                    
-                    if (!systemUsers.some(user => user.email === activeUser.email)) {
-                        systemUsers.push(activeUser);
+                    // --- CLOUD SYNCHRONIZATION UPGRADE ---
+                    const userEmail = activeUser.email || "guest_user";
+                    if (typeof supabase !== 'undefined') {
+                        // Push username changes and updated cropped base64 avatar strings up to Supabase row matching user identity
+                        const { error } = await supabase
+                            .from('profiles')
+                            .upsert({ 
+                                id: userEmail, 
+                                username: rawUsername, 
+                                avatar_url: temporaryAvatarBase64 
+                            }, { onConflict: 'id' });
+
+                        if (error) console.error("Cloud profile sync failed:", error.message);
                     }
-                    
-                    localStorage.setItem('systemUsers', JSON.stringify(updatedUsers.length ? updatedUsers : systemUsers));
 
                     if (sidebarUsernameText) sidebarUsernameText.innerHTML = activeUser.name;
                     if (sidebarUserAvatarImg) sidebarUserAvatarImg.src = activeUser.avatar;
                     if (profileHeaderNameDisplay) profileHeaderNameDisplay.innerHTML = activeUser.name;
 
-                    alert("Configuration changes synchronized successfully!");
+                    alert("Configuration changes synchronized successfully across devices!");
                     window.location.reload();
                 });
             }

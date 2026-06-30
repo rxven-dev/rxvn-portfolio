@@ -198,10 +198,16 @@
 
         // Global Active Session Sync State Monitoring
         onAuthStateChanged(auth, (user) => {
-            if (user) {
-               // window.location.href = 'index.html';
-            }
-        });
+    if (user) {
+        const sessionUser = {
+            name: user.displayName || user.email.split('@')[0],
+            email: user.email,
+            avatar: user.photoURL || "https://i.ibb.co/yc0TbBZ7/pfp.jpg"
+        };
+        localStorage.setItem('activeSessionUser', JSON.stringify(sessionUser));
+        // window.location.href = 'index.html';
+    }
+});
 
         // --- CLOUD PORTAL LOGIN CONTROLLER ---
         loginForm.addEventListener("submit", async function(e) {
@@ -293,22 +299,31 @@
                 verificationModal.style.display = "none";
 
                 try {
-                    // PIN matches! Now officially write account into central Firebase DB
-                    const userCredential = await createUserWithEmailAndPassword(
-                        auth, 
-                        temporaryRegistrationCache.email, 
-                        temporaryRegistrationCache.password
-                    );
-                    
-                    // Attach publisher name to profile settings token
-                    await updateProfile(userCredential.user, {
-                        displayName: temporaryRegistrationCache.name
-                    });
+    // PIN matches! Now officially write account into central Firebase DB
+    const userCredential = await createUserWithEmailAndPassword(
+        auth, 
+        temporaryRegistrationCache.email, 
+        temporaryRegistrationCache.password
+    );
+    
+    // Attach publisher name to profile settings token
+    await updateProfile(userCredential.user, {
+        displayName: temporaryRegistrationCache.name
+    });
 
-                    authAlert.innerText = "Profile Authorized! Booting interface parameters...";
-                    setTimeout(() => { window.location.href = 'index.html'; }, 1500);
+    // ==================== ADD THIS SESSION SAVE BLOCK ====================
+    const newSessionUser = {
+        name: temporaryRegistrationCache.name,
+        email: temporaryRegistrationCache.email,
+        avatar: "https://i.ibb.co/yc0TbBZ7/pfp.jpg" // default avatar link
+    };
+    localStorage.setItem('activeSessionUser', JSON.stringify(newSessionUser));
+    // =====================================================================
 
-                } catch (dbErr) {
+    authAlert.innerText = "Profile Authorized! Booting interface parameters...";
+    setTimeout(() => { window.location.href = 'index.html'; }, 1500);
+
+} catch (dbErr) {
                     console.error("Firebase Node Sync Error:", dbErr);
                     authAlert.className = "alert-msg alert-danger";
                     

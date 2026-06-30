@@ -18,7 +18,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // DOM Elements Cache Mapping
     const formModal = document.getElementById("gameModal");
-    const registerBtn = document.querySelector(".btn-primary");
+    const registerBtn = document.getElementById("openRegisterGameModalBtn");
     const tableBody = document.querySelector(".dashboard-table tbody");
     const searchInput = document.querySelector(".search-bar input");
     const catalogCardsContainer = document.getElementById('catalogCardsContainer');
@@ -277,7 +277,7 @@ document.addEventListener("DOMContentLoaded", () => {
             },
             options: {
                 responsive: true,
-                maintainAspectRatio: true, 
+                maintainAspectRatio: false, 
                 aspectRatio: 2, 
                 plugins: {
                     legend: { display: false }

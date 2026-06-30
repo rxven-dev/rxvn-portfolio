@@ -83,6 +83,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
             const rowNode = document.createElement("div");
             rowNode.style = "display: flex; align-items: center; justify-content: space-between; padding: 12px; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; gap: 16px; margin-bottom: 12px;";
+            
+            // FIXED BELOW: Updated onclick properties to target window.updateQtyAdjust and window.removeItemFromNode
             rowNode.innerHTML = `
                 <div style="display: flex; align-items: center; gap: 14px;">
                     <img src="${item.image || 'https://images.unsplash.com/photo-1551103782-8ab07afd45c1?w=100'}" style="width: 60px; height: 40px; object-fit: cover; border-radius: 6px;">
@@ -94,12 +96,12 @@ document.addEventListener("DOMContentLoaded", () => {
                 
                 <div style="display: flex; align-items: center; gap: 16px;">
                     <div style="display: flex; align-items: center; background: var(--bg-input); border-radius: 6px; overflow: hidden; border: 1px solid var(--border-color);">
-                        <button class="cart-qty-btn" onclick="updateQtyAdjust(${index}, -1)" style="padding: 4px 10px; background:transparent; border:none; cursor:pointer; color: var(--text-primary); font-weight:700;">-</button>
+                        <button class="cart-qty-btn" onclick="window.updateQtyAdjust(${index}, -1)" style="padding: 4px 10px; background:transparent; border:none; cursor:pointer; color: var(--text-primary); font-weight:700;">-</button>
                         <span style="padding: 0 4px; font-size: 0.85rem; font-weight:600; min-width:20px; text-align:center;">${itemQty}</span>
-                        <button class="cart-qty-btn" onclick="updateQtyAdjust(${index}, 1)" style="padding: 4px 10px; background:transparent; border:none; cursor:pointer; color: var(--text-primary); font-weight:700;">+</button>
+                        <button class="cart-qty-btn" onclick="window.updateQtyAdjust(${index}, 1)" style="padding: 4px 10px; background:transparent; border:none; cursor:pointer; color: var(--text-primary); font-weight:700;">+</button>
                     </div>
                     <span style="font-weight: 700; font-size: 1rem; min-width: 70px; text-align: right;">${formattedCostTotal}</span>
-                    <button onclick="removeItemFromNode(${index})" style="background: none; border: none; color: #ef4444; cursor: pointer; font-size: 1.1rem; display: flex; align-items: center;"><i class="ri-delete-bin-6-line"></i></button>
+                    <button onclick="window.removeItemFromNode(${index})" style="background: none; border: none; color: #ef4444; cursor: pointer; font-size: 1.1rem; display: flex; align-items: center;"><i class="ri-delete-bin-6-line"></i></button>
                 </div>
             `;
             cartStream.appendChild(rowNode);

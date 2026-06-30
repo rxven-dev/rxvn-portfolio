@@ -307,16 +307,34 @@ html.light-theme body {
     font-size: 0.95rem;
 }
 
+/* 1. Use an inline-flex banner wrapper so elements can sit natively side-by-side */
+.welcome-banner {
+    display: flex;
+    flex-wrap: wrap;       /* Allows them to stack gracefully if the screen gets micro-small */
+    align-items: flex-start;
+    gap: 16px;             /* This acts as your automatic spacing box between text and the date */
+    width: 100%;
+}
+
+/* 2. Remove the rigid absolute positioning */
 .date-badge {
+    /* REMOVED: position: absolute; top: 24px; left: 480px; */
+    
+    /* NEW: Keeps it flowing cleanly right after your text block */
     display: flex;
     align-items: center;
-    gap: 8px;
+    align-self: flex-start; /* Aligns to the top line of the text */
+    margin-top: 6px;        /* Tiny nudged adjustment to line up perfectly with the baseline of 'Executive' */
+    
+    /* Keep your existing style choices below */
     background-color: var(--bg-card);
+    font-size: 0.9rem;
+    font-weight: 500;
+    gap: 8px;
     border: 1px solid var(--border-color);
     padding: 8px 16px;
     border-radius: 12px;
-    font-size: 0.9rem;
-    font-weight: 500;
+    white-space: nowrap;    /* Prevents the text inside the badge from breaking into two lines */
 }
 
 /* ==========================================================================
@@ -1256,12 +1274,11 @@ html.dark-theme .game-display-card:hover {
     }
 
     #platformCurrencyConverter {
-        width: 100% !important;
         padding: 0 12px !important;
         font-size: 16px !important; 
         border-radius: 8px !important;
         height: 38px !important; 
-        background: rgba(17, 24, 39, 0.7) !important;
+        background: rgb(5 9 24) !important;
         border: 1px solid rgba(255, 255, 255, 0.08) !important;
         color: var(--text-primary) !important;
     }
@@ -1371,9 +1388,17 @@ html.dark-theme .game-display-card:hover {
         gap: 16px !important;
     }
 
+@media (min-width: 769px) {
     #platformCurrencyConverter {
-        width: 130px !important; /* Return select box back to compact container parameters */
+        padding: 0 12px !important;
+        font-size: 16px !important;
+        border-radius: 8px !important;
+        height: 38px !important;
+        background: rgb(6 9 19) !important;
+        border: 1px solid rgba(255, 255, 255, 0.08) !important;
+        color: var(--text-primary) !important;
     }
+}
 
     /* 6. Restore Multi-Column System Grid Patterns */
     .metrics-grid {
@@ -1389,3 +1414,247 @@ html.dark-theme .game-display-card:hover {
     }
 }
 
+/* Container sizing */
+.custom-dropdown {
+    position: relative;
+    width: 160px;
+    font-family: 'Inter', sans-serif;
+    user-select: none;
+}
+
+/* The Trigger Button */
+.dropdown-trigger {
+    width: 100%;
+    height: 38px;
+    background: rgba(255, 255, 255, 0.06);
+    backdrop-filter: blur(16px) saturate(120%);
+    -webkit-backdrop-filter: blur(16px) saturate(120%);
+    color: #f3f4f6;
+    font-size: 0.85rem;
+    font-weight: 500;
+    padding: 0 14px;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    outline: none;
+}
+
+.dropdown-trigger b { font-weight: 600; }
+.dropdown-trigger .arrow { font-size: 0.65rem; opacity: 0.7; }
+
+/* The True Liquid iOS Menu */
+.dropdown-menu {
+    position: absolute;
+    top: 44px; /* Slight gap below the button */
+    left: 0;
+    width: 100%;
+    margin: 0;
+    padding: 6px;
+    list-style: none;
+    background: rgba(255, 255, 255, 0.08); /* Translucent */
+    backdrop-filter: blur(20px) saturate(140%); /* Frosted glass effect */
+    -webkit-backdrop-filter: blur(20px) saturate(140%);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 12px; /* Smooth iOS curves */
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    z-index: 100;
+    
+    /* Hidden by default, toggled with JS */
+    display: none; 
+}
+
+.dropdown-menu.show {
+    display: block;
+}
+
+/* Individual items inside the menu */
+.dropdown-item {
+    padding: 8px 10px;
+    color: #f3f4f6;
+    font-size: 0.85rem;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+/* Hover & Active item highlights */
+.dropdown-item:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.dropdown-item.active {
+    background: #3b82f6; /* iOS signature blue selection */
+    color: #ffffff;
+}
+
+/* The Main Card Container (Picture 2 Styling) */
+.data-table-section {
+    background-color: #0b0e1400; /* Deep dark slate */
+    border: 1px solid #1c2331; /* Subtle border outline */
+    border-radius: 12px;       /* Smooth rounded card corners */
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+    margin: 20px 0;
+    overflow: hidden;          /* Keeps inner content inside the rounded corners */
+}
+
+/* Header Container inside the Card */
+.table-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 24px;
+}
+
+.table-card-header h3 {
+    margin: 0;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #f3f4f6;
+}
+
+/* Export CSV Button styling */
+.table-card-header .btn-secondary {
+    background: transparent;
+    border: 1px solid #1c2331;
+    color: #f3f4f6;
+    padding: 8px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    font-weight: 500;
+    transition: background 0.2s ease;
+}
+
+.table-card-header .btn-secondary:hover {
+    background: rgba(28, 35, 49, 0.5);
+}
+
+/* Table Wrapper for responsiveness */
+.table-responsive {
+    width: 100%;
+    overflow-x: auto;
+}
+
+/* The Table Matrix */
+.dashboard-table {
+    width: 100%;
+    border-collapse: collapse; /* Merges borders properly */
+}
+
+/* Table Headers */
+.dashboard-table th {
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #8c8f9c; /* Muted silver text */
+    padding: 14px 24px;
+    text-align: left;
+    background-color: transparent;
+}
+
+/* Aligning the Action header to the right */
+.dashboard-table th.text-right {
+    text-align: right;
+}
+
+/* Table Body Cells styling */
+.dashboard-table td {
+    padding: 16px 24px;
+    font-size: 0.9rem;
+    color: #d1d5db;
+    text-align: left;
+    
+    /* Adds the horizontal separator line below cells */
+    border-top: 1px solid #1c2331; 
+}
+
+/* Aligning the last column content (actions button) to the right */
+.dashboard-table td:last-child {
+    text-align: right;
+}
+
+/* Optional hover state to make table rows look interactive */
+.dashboard-table tbody tr:hover {
+    background-color: rgba(28, 35, 49, 0.2);
+}
+
+/* 1. The Screen / Canvas */
+.ios-screen {
+    position: relative;
+    width: 100%;
+    min-height: 100vh;
+    background-color: #080b11; /* Sleek dark theme base */
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", sans-serif;
+}
+
+/* 2. The Floating Liquid Blobs (Crucial for the blur to look "liquid") */
+.liquid-blob {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px); /* Heavy blur to blend colors smoothly */
+    opacity: 0.4;
+    mix-blend-mode: screen;
+    animation: float 12s infinite alternate ease-in-out;
+}
+
+.blob-1 {
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(circle, #3b82f6 0%, transparent 70%); /* iOS Blue */
+    top: -10%;
+    left: 10%;
+}
+
+.blob-2 {
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, #a855f7 0%, transparent 70%); /* iOS Purple */
+    bottom: -10%;
+    right: 10%;
+    animation-delay: -6s;
+}
+
+/* 3. The Core iOS Glassmorphism Card Code */
+.ios-liquid-card {
+    position: relative;
+    z-index: 10;
+    width: 360px;
+    padding: 32px;
+    color: #ffffff;
+    
+    /* THE FIX: A dual background layer. 
+       Layer 1: A very subtle purple-blue glow coming from the bottom right.
+       Layer 2: A translucent dark overlay. */
+    background: 
+        radial-gradient(circle at 90% 90%, rgba(99, 102, 241, 0.15), transparent 60%),
+        rgba(255, 255, 255, 0.03); 
+    
+    /* This amplifies whatever tiny bit of color passes through */
+    backdrop-filter: blur(24px) saturate(180%);
+    -webkit-backdrop-filter: blur(24px) saturate(180%);
+    
+    /* Smooth iOS curves */
+    border-radius: 24px; 
+    
+    /* Crisp edge reflection */
+    border: 1px solid rgba(255, 255, 255, 0.08); 
+    
+    /* Clean outer shadow for depth */
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4); 
+}
+
+body {
+    background-color: #080b11;
+    /* Adds two massive, soft color pools to the top-left and bottom-right of your screen */
+    background-image: 
+        radial-gradient(at 0% 0%, rgba(59, 130, 246, 0.12) 0px, transparent 50%),
+        radial-gradient(at 100% 100%, rgba(168, 85, 247, 0.12) 0px, transparent 50%);
+    min-height: 100vh;
+}

@@ -8,12 +8,12 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
-    <link rel="stylesheet" href="assets/css/dashboard.css?v=2.5">
+    <link rel="stylesheet" href="assets/css/dashboard.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
-        /* Precision scaling constraints for brand typography logo positioning */
+/* Precision scaling constraints for brand typography logo positioning */
         .brand-custom-logo {
             width: 28px;
             height: 28px;
@@ -26,11 +26,186 @@
         .mobile-menu-btn {
             display: none;
         }
+
+        /* --- IOS STYLE LIQUID BACKGROUND ELEMENTS --- */
+        .dashboard-wrapper {
+            position: relative;
+            overflow: hidden;
+            background-color: var(--bg-main) !important;
+            z-index: 1;
+        }
+
+        .liquid-blob {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(90px);
+            opacity: 0.18;
+            z-index: -1;
+            pointer-events: none;
+            animation: floatLiquid 14s infinite ease-in-out;
+        }
+
+        .blob-1 {
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(99, 102, 241, 0.3) 0%, transparent 70%);
+            top: -150px;
+            left: -100px;
+            animation-duration: 16s;
+        }
+
+        .blob-2 {
+            width: 550px;
+            height: 550px;
+            background: radial-gradient(circle, rgba(16, 185, 129, 0.25) 0%, transparent 70%);
+            bottom: -100px;
+            right: -50px;
+            animation-duration: 22s;
+            animation-delay: -4s;
+        }
+
+        @keyframes floatLiquid {
+            0% { transform: translate(0px, 0px) scale(1); }
+            33% { transform: translate(30px, -50px) scale(1.05); }
+            66% { transform: translate(-20px, 20px) scale(0.95); }
+            100% { transform: translate(0px, 0px) scale(1); }
+        }
+
+        /* --- GLOBAL CONTENT RESTRAINTS & CENTERING --- */
+        #view-overview {
+            max-width: 1050px !important;  /* Shrunk down slightly to push cards away from screen edges */
+            margin: 40px auto !important;   /* Added top/bottom margin to move it down from the header cleanly */
+            padding: 0 40px !important;     /* Extra left/right room to squeeze it comfortably toward the center */
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        /* --- REMOVE THE DESKTOP LINES --- */
+        @media (min-width: 769px) {
+            .metrics-grid::before,
+            .metrics-grid::after,
+            .overview-header, 
+            hr, 
+            .border-line-class { 
+                border: none !important;
+                background: none !important;
+                display: none !important;
+            }
+        }
+
+        /* --- FROSTED CLOUDY GLASS CARDS --- */
+        .metric-card {
+            border-radius: 12px !important;
+            border: 1px solid rgba(255, 255, 255, 0.12) !important;
+            background: rgb(31 41 55 / 0%) !important; 
+            backdrop-filter: blur(25px) saturate(140%) !important; 
+            -webkit-backdrop-filter: blur(25px) saturate(140%) !important;
+            width: 100%;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 26px !important; /* Made the inner card roomy so data doesn't feel tight */
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.2) !important;
+        }
+
+        .metric-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            margin-bottom: 12px;
+        }
+
+        .metric-value {
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin: 8px 0;
+            display: flex;
+            align-items: baseline;
+            gap: 6px;
+        }
+
+        .metric-icon-box {
+            border-radius: 8px !important;
+        }
+
+        /* 💻 DEFAULT: Desktop Layout (Wide Screens) */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr) !important; 
+            gap: 32px !important; /* Increased card separation distance */
+            width: 100% !important;
+            margin-top: 20px !important;
+        }
+
+        .metrics-grid .metric-card.chart-card {
+            grid-column: span 2 !important; 
+        }
+
+        /* 📱 RESPONSIVE MEDIA QUERY: Mobile Layout */
+        @media (max-width: 768px) {
+            #view-overview {
+                padding: 0 16px !important;
+                margin: 20px auto !important;
+            }
+
+            .metrics-grid {
+                grid-template-columns: 1fr !important; 
+                gap: 20px !important; 
+            }
+            
+            .metrics-grid .metric-card.chart-card {
+                grid-column: span 1 !important; 
+                height: auto !important; 
+                padding-bottom: 24px !important;
+            }
+
+@media (max-width: 768px) {
+    /* Target the card container itself to add nice spacing on mobile */
+    .chart-card {
+        padding: 16px !important;
+        width: 100% !important;
+        box-sizing: border-box;
+    }
+
+    /* Target ONLY the immediate chart wrapper wrapper, not every sub-div */
+    .chart-card > .chart-container,
+    .chart-card > div:last-child { 
+        position: relative !important;
+        width: 100% !important;
+        height: 200px !important; /* Reduced from 260px for a better mobile aspect ratio */
+        margin: 0 auto !important;
+    }
+}
+
+            .chart-card canvas {
+                width: 100% !important;   
+                height: 100% !important;  
+                display: block !important;
+            }
+
+            .metric-card {
+                padding: 18px !important; 
+            }
+
+            .metric-value {
+                font-size: 1.5rem; 
+            }
+
+            /* Container framework styling */
+            /* --- TOPBAR RESTRAINTS & RE-ALIGNMENT --- */
+
+        }
     </style>
 </head>
 <body>
 
     <div class="dashboard-wrapper">
+        <div class="liquid-blob blob-1"></div>
+        <div class="liquid-blob blob-2"></div>
+        <div class="liquid-blob blob-3"></div>
+
         
         <aside class="sidebar">
             <div class="sidebar-brand">
@@ -83,13 +258,13 @@
                         </select>
                     </div>
 
+                    <button class="btn btn-primary" id="openRegisterGameModalBtn" style="display: none;">
+                        <i class="ri-add-line"></i> Register New Game
+                    </button>
+
                     <button class="action-icon-btn">
                         <i class="ri-notification-3-line"></i>
                         <span class="badge"></span>
-                    </button>
-
-                    <button class="btn btn-primary" id="openRegisterGameModalBtn" style="display: none;">
-                        <i class="ri-add-line"></i> Register New Game
                     </button>
                 </div>
             </header>
@@ -326,30 +501,30 @@
                             </div>
                         </div>
 
-                        <div class="metric-card">
-                            <h3>Order Summary</h3>
-                            
-                            <div style="display: flex; justify-content: space-between; margin-bottom: 12px;">
-                                <span>Subtotal</span>
-                                <span class="cart-subtotal" data-base-val="0.00">$0.00</span>
-                            </div>
-                            
-                            <div style="display: flex; justify-content: space-between; margin-bottom: 12px;">
-                                <span>Platform Tax (5%)</span>
-                                <span class="cart-tax" data-base-val="0.00">$0.00</span>
-                            </div>
-                            
-                            <hr style="border-color: var(--border-color); margin: 16px 0;">
-                            
-                            <div style="display: flex; justify-content: space-between; margin-bottom: 20px; font-weight: bold;">
-                                <span>Total Payout</span>
-                                <span class="cart-total" data-base-val="0.00" style="color: var(--success);">$0.00</span>
-                            </div>
-                            
-                            <button class="btn btn-primary" style="width: 100%;">
-                                <i class="ri-secure-payment-line"></i> Secure Checkout
-                            </button>
-                        </div>
+<div class="metric-card">
+    <h3>Order Summary</h3>
+    
+    <div style="display: flex; justify-content: space-between; margin-bottom: 12px;">
+        <span>Subtotal</span>
+        <span id="summarySubtotal" class="cart-subtotal" data-base-val="0.00">$0.00</span>
+    </div>
+    
+    <div style="display: flex; justify-content: space-between; margin-bottom: 12px;">
+        <span>Platform Tax (5%)</span>
+        <span id="summaryTax" class="cart-tax" data-base-val="0.00">$0.00</span>
+    </div>
+    
+    <hr style="border-color: var(--border-color); margin: 16px 0;">
+    
+    <div style="display: flex; justify-content: space-between; margin-bottom: 20px; font-weight: bold;">
+        <span>Total Payout</span>
+        <span id="summaryTotal" class="cart-total" data-base-val="0.00" style="color: var(--success);">$0.00</span>
+    </div>
+    
+    <button class="btn btn-primary" id="btnProcessCheckout" style="width: 100%;">
+        <i class="ri-secure-payment-line"></i> Secure Checkout
+    </button>
+</div>
                     </div>
                 </div>
 

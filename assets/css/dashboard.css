@@ -120,15 +120,20 @@ html.light-theme body {
     align-items: center;
     gap: 12px;
     padding: 12px 16px;
-    color: var(--text-secondary) !important;
+    color: var(--text-secondary);
     text-decoration: none;
+    border-radius: 10px;
+    font-size: 0.95rem;
     font-weight: 500;
-    border-radius: 12px;
-    transition: all 0.2s ease;
+    /* This makes sure the hover effects pop up smoothly instead of snapping instantly */
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    position: relative;
 }
 
+/* Make sure the icons inside also transition smoothly */
 .menu-item i {
     font-size: 1.2rem;
+    transition: transform 0.25s ease !important;
 }
 
 .menu-item:hover, .menu-item.active {
@@ -1112,5 +1117,242 @@ html.dark-theme .game-display-card:hover {
 @keyframes popupScaleIn {
     to {
         transform: scale(1);
+    }
+}
+
+/* ==========================================================================
+   UNIFIED RESPONSIVE NAVIGATION DRAWER & MOBILE LAYOUT FIXES
+   ========================================================================== */
+@media (max-width: 768px) {
+    html, body {
+        height: 100% !important;
+        margin: 0;
+        padding: 0;
+        overflow-x: hidden !important;
+    }
+
+    .dashboard-wrapper {
+        display: flex !important;
+        flex-direction: row !important;
+        align-items: stretch !important;
+        width: 100% !important;
+        height: 100vh !important;
+        position: relative !important;
+        overflow: hidden !important;
+    }
+
+    /* Reveal the mobile structural trigger menu icon */
+    .mobile-menu-btn {
+        display: inline-flex !important;
+        background: rgba(255, 255, 255, 0.03) !important;
+        border: 1px solid rgba(255, 255, 255, 0.08) !important;
+        color: var(--text-primary) !important;
+        font-size: 1.3rem !important;
+        cursor: pointer !important;
+        padding: 0 !important;
+        width: 38px !important;
+        height: 38px !important;
+        margin-right: 8px !important;
+        align-items: center !important;
+        justify-content: center !important;
+        border-radius: 8px !important;
+    }
+
+/* --- SOLID APP DRAWER SLIDEOUT NAVIGATION OVERLAY --- */
+    .sidebar {
+        position: fixed !important;
+        top: 0 !important;
+        left: -280px !important; 
+        width: 260px !important;     
+        min-width: 260px !important;
+        height: 100vh !important;
+        z-index: 999999 !important;  
+        transition: left 0.3s cubic-bezier(0.25, 1, 0.5, 1) !important; /* Premium buttery smooth slide acceleration */
+        box-shadow: 15px 0 40px rgba(0, 0, 0, 0.4) !important;
+        display: flex !important;
+        flex-direction: column !important;
+        justify-content: space-between !important;
+        padding: 24px 16px !important;
+        box-sizing: border-box !important;
+        overflow-x: hidden !important;
+
+        /* --- THE MATCHING iOS LIQUID GLASS EFFECTS --- */
+        background: rgba(15, 17, 26, 0.78) !important; /* Slightly darker glass tint to give the drawer separation depth */
+        backdrop-filter: blur(24px) saturate(190%) !important; /* High-density frosted glass melt filter */
+        -webkit-backdrop-filter: blur(24px) saturate(190%) !important;
+        border-right: 1px solid rgba(255, 255, 255, 0.06) !important; /* Clean hairline divider on the drawer edge */
+    }
+
+    .sidebar.mobile-open {
+        left: 0 !important;
+    }
+    
+    .sidebar *, .sidebar a, .sidebar span {
+        white-space: nowrap !important;
+        text-overflow: ellipsis !important;
+        overflow: hidden !important;
+        max-width: 100% !important;
+    }
+
+/* --- MAIN CONTENT ELEMENT WRAPPER --- */
+    .main-content {
+        flex: 1 !important;
+        width: 100% !important;
+        margin-left: 0 !important;
+        overflow-y: auto !important; 
+        padding: 130px 16px 16px 16px !important; /* Large top padding to push cards below the floating header */
+        box-sizing: border-box !important;
+        -webkit-overflow-scrolling: touch !important;
+    }
+
+/* --- PREMIUM MOBILE TWO-ROW HEADER DESIGN --- */
+    .topbar {
+        position: fixed !important; /* Sticky/Fixed lock on the viewport window absolute coordinates */
+        top: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        height: auto !important;
+        min-height: 110px !important; 
+        padding: 14px 16px !important; 
+        margin-bottom: 0 !important; 
+        display: flex !important;
+        flex-direction: column !important; 
+        justify-content: flex-start !important;
+        align-items: stretch !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
+        gap: 12px !important;
+        z-index: 9999 !important; 
+        border-bottom: 1px solid rgba(255, 255, 255, 0.07) !important; /* Premium subtle divider line */
+
+        /* --- THE MAGIC iOS LIQUID GLASS EFFECT --- */
+        background: rgba(6, 9, 19, 0.72) !important; /* Translucent background dark coat tint */
+        backdrop-filter: blur(20px) saturate(190%) !important; /* Liquid glass blur + native iOS color saturation boost */
+        -webkit-backdrop-filter: blur(20px) saturate(190%) !important; /* Safari compatibility rendering support */
+    }
+
+    /* The Row 1 left container (Menu button + Search bar) */
+    .topbar > div:first-child {
+        display: flex !important;
+        align-items: center !important;
+        flex: 1 !important;
+        max-width: 100% !important;
+        width: 100% !important;
+    }
+
+    /* Premium Search Bar */
+    .search-bar {
+        flex: 1 !important;
+        width: 100% !important;
+        height: 38px !important;
+        padding: 0 12px !important;
+        margin: 0 !important;
+        background: rgba(17, 24, 39, 0.7) !important;
+        border: 1px solid rgba(255, 255, 255, 0.08) !important;
+        border-radius: 8px !important;
+        display: flex !important;
+        align-items: center !important;
+    }
+
+    .search-bar input {
+        font-size: 0.85rem !important;
+        width: 100% !important;
+        background: transparent !important;
+        border: none !important;
+        color: var(--text-primary) !important;
+        padding-left: 6px !important;
+    }
+
+    /* The Row 1/2 Right container (Holds dropdown, notification, and register button) */
+    .topbar-actions {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+        width: 100% !important;
+        gap: 10px !important; 
+        flex-wrap: wrap !important; /* Gracefully allows buttons to step down */
+    }
+
+    /* Currency Dropdown: Spans nicely alongside notifications */
+    .currency-dropdown-container {
+        flex: 1 !important;
+    }
+
+/* Currency conversion dropdown */
+    #platformCurrencyConverter {
+        width: 100% !important;
+        padding: 0 12px !important;
+        font-size: 16px !important; /* Forces mobile safari/chrome engines to skip auto-zoom layouts */
+        border-radius: 8px !important;
+        height: 38px !important; 
+        background: rgba(17, 24, 39, 0.7) !important;
+        border: 1px solid rgba(255, 255, 255, 0.08) !important;
+        color: var(--text-primary) !important;
+        transform: none !important; /* Clears focus engine shift rules */
+        outline: none !important;
+    }
+    
+    #platformCurrencyConverter:focus {
+        outline: none !important;
+        border-color: var(--accent-primary, #6366f1) !important;
+    }
+
+    /* Notification button centering layout */
+    .action-icon-btn {
+        background: rgba(255, 255, 255, 0.03) !important;
+        border: 1px solid rgba(255, 255, 255, 0.08) !important;
+        padding: 0 !important;
+        font-size: 1.2rem !important;
+        height: 38px !important;
+        width: 38px !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        border-radius: 8px !important;
+        position: relative !important;
+    }
+
+    .action-icon-btn .badge {
+        position: absolute !important;
+        top: 8px !important;
+        right: 8px !important;
+        width: 8px !important;
+        height: 8px !important;
+        border-radius: 50% !important;
+        background: #ef4444 !important;
+    }
+
+    /* --- THE HERO HERO ACTION REGISTER BUTTON --- */
+    button[id*="Register"],
+    button[class*="register"],
+    .btn-primary,
+    #openRegisterGameModalBtn {
+        width: 100% !important; /* Full width button below the utilities */
+        padding: 0 16px !important;
+        font-size: 0.85rem !important;
+        font-weight: 600 !important;
+        height: 40px !important; 
+        min-height: 40px !important;
+        white-space: nowrap !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        flex-shrink: 0 !important;
+        border-radius: 8px !important;
+        margin-top: 4px !important;
+        box-shadow: 0 4px 12px rgba(99, 102, 241, 0.2) !important;
+    }
+
+    /* Ensure uniform dashboard content components stack correctly */
+    .content-container div[style*="display: grid"], 
+    .content-container div[style*="grid-template-columns"] {
+        display: grid !important;
+        grid-template-columns: 1fr !important; 
+        gap: 16px !important;
+    }
+
+    .custom-theme-input, 
+    select {
+        font-size: 16px !important;
     }
 }

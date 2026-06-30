@@ -447,97 +447,63 @@ footer {
 @keyframes modalScaleUp { from { transform: scale(0.92); opacity: 0; } to { transform: scale(1); opacity: 1; } }
 @keyframes toastSlideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
 
-/* --- ULTIMATE MOBILE BREAKPOINT FORCE-RESET --- */
-@media (max-width: 768px) {
-    /* Force layout boxes to respect viewport bounds */
-    html, body {
-        height: 100% !important;
-        margin: 0 !important;
-        padding: 0 !important;
-        overflow: hidden !important;
-    }
+/* Global Reset and Theme */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+}
 
-    .dashboard-wrapper {
-        display: flex !important;
-        flex-direction: row !important;
-        width: 100% !important;
-        height: 100vh !important;
-        position: relative !important;
-        overflow: hidden !important;
-    }
+body {
+    background-color: var(--bg-main) !important;
+    background-image: radial-gradient(circle at 80% 20%, rgba(99, 102, 241, 0.12) 0%, transparent 50%),
+                      radial-gradient(circle at 10% 80%, rgba(16, 185, 129, 0.06) 0%, transparent 40%);
+    background-attachment: fixed;
+    color: var(--text-primary) !important;
+    overflow-x: hidden;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
 
-    /* --- SIDEBAR: Ultra-Aggressive Layer Isolation & Expansion --- */
-    aside, 
-    .sidebar,
-    div[class*="sidebar"] {
-        position: fixed !important;
-        top: 0 !important;
-        left: -280px !important; /* Kept wide enough to hide the full width safely */
-        width: 260px !important;  /* Expanded space so no text leaks out */
-        min-width: 260px !important;
-        max-width: 260px !important;
-        height: 100vh !important;
-        background: #11111b !important; /* True solid color to block underneath content */
-        background-color: #11111b !important;
-        z-index: 9999999 !important; /* Forces it over ALL top headers/nav elements */
-        transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
-        box-shadow: 10px 0 30px rgba(0, 0, 0, 0.7) !important;
-        display: flex !important;
-        flex-direction: column !important;
-        overflow-x: hidden !important;
-    }
+/* Soft elegant background glow for light mode canvas */
+html.light-theme body {
+    background-image: radial-gradient(circle at 80% 20%, rgba(99, 102, 241, 0.04) 0%, transparent 50%),
+                      radial-gradient(circle at 10% 80%, rgba(16, 185, 129, 0.03) 0%, transparent 40%);
+}
 
-    /* Target state when sliding out */
-    aside.mobile-open,
-    .sidebar.mobile-open,
-    div[class*="sidebar"].mobile-open {
-        left: 0 !important;
-    }
+/* About Me / Hero Header */
+.hero-section {
+    background: transparent;
+}
 
-    /* Ensure text containers inside sidebar wrap or scale down gracefully */
-    .sidebar *, aside * {
-        max-width: 100% !important;
-        text-overflow: ellipsis;
-    }
+/* ==========================================================================
+   UNIFIED RESPONSIVE NAVIGATION DRAWER & MOBILE LAYOUT FIXES
+   ========================================================================== */
+/* Global Reset and Theme */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+}
 
-    /* --- TOP HEADER & REGISTER BUTTON COMPRESSION --- */
-    /* Target any button containing 'Register' inside your header matrix */
-    button[id*="Register"],
-    button[class*="register"],
-    .btn-primary,
-    #openRegisterGameModalBtn {
-        padding: 4px 8px !important;
-        font-size: 11px !important; /* Shrunk down layout footprint */
-        line-height: 1.2 !important;
-        height: auto !important;
-        min-height: 30px !important;
-        white-space: nowrap !important; /* Stops the text from breaking into huge vertical rows */
-        display: inline-flex !important;
-        align-items: center !important;
-        justify-content: center !important;
-    }
+body {
+    background-color: var(--bg-main) !important;
+    background-image: radial-gradient(circle at 80% 20%, rgba(99, 102, 241, 0.12) 0%, transparent 50%),
+                      radial-gradient(circle at 10% 80%, rgba(16, 185, 129, 0.06) 0%, transparent 40%);
+    background-attachment: fixed;
+    color: var(--text-primary) !important;
+    overflow-x: hidden;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
 
-    /* Force the header wrappers to not stretch vertically because of the button */
-    header, 
-    .top-header, 
-    .navbar {
-        height: 60px !important;
-        padding: 0 12px !important;
-        display: flex !important;
-        align-items: center !important;
-        justify-content: space-between !important;
-    }
+/* Soft elegant background glow for light mode canvas */
+html.light-theme body {
+    background-image: radial-gradient(circle at 80% 20%, rgba(99, 102, 241, 0.04) 0%, transparent 50%),
+                      radial-gradient(circle at 10% 80%, rgba(16, 185, 129, 0.03) 0%, transparent 40%);
+}
 
-    /* --- MAIN BODY SCROLL VIEWPORT RETAINER --- */
-    .main-content {
-        flex: 1 !important;
-        width: 100% !important;
-        max-width: 100% !important;
-        height: 100vh !important;
-        margin-left: 0 !important; /* Destroys any lingering desktop pushes */
-        padding: 70px 16px 16px 16px !important; /* 70px top-padding guards against header overlap */
-        overflow-y: auto !important;
-        box-sizing: border-box !important;
-        -webkit-overflow-scrolling: touch !important;
-    }
+/* About Me / Hero Header */
+.hero-section {
+    background: transparent;
 }

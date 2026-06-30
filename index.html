@@ -12,6 +12,159 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        /* Precision scaling constraints for brand typography logo positioning */
+        .brand-custom-logo {
+            width: 28px;
+            height: 28px;
+            object-fit: contain;
+            display: inline-block;
+            vertical-align: middle;
+        }
+
+        /* Hidden by default on desktop viewports */
+        .mobile-menu-btn {
+            display: none;
+        }
+
+        /* --- THE CORRECT RESPONISVE NAVIGATION DRAWER OVERLAY SYSTEM --- */
+        @media (max-width: 768px) {
+            html, body {
+                height: 100% !important;
+                margin: 0;
+                padding: 0;
+                overflow: hidden !important;
+            }
+
+            /* Keep layout container processing elements horizontal */
+            .dashboard-wrapper {
+                display: flex !important;
+                flex-direction: row !important;
+                align-items: stretch !important;
+                width: 100% !important;
+                height: 100vh !important;
+                position: relative !important;
+                overflow: hidden !important;
+            }
+
+            /* Reveal the 3-line menu bar button */
+            .mobile-menu-btn {
+                display: flex !important;
+                background: none;
+                border: none;
+                color: var(--text-primary);
+                font-size: 1.5rem;
+                cursor: pointer;
+                padding: 4px;
+                margin-right: 12px;
+                align-items: center;
+                justify-content: center;
+            }
+
+            /* --- SLIDING OVERLAY COLUMN --- */
+            .sidebar {
+                position: fixed !important;
+                top: 0 !important;
+                left: -150px !important; /* Kept completely out of sight on the left by default */
+                width: 140px !important;
+                min-width: 140px !important;
+                height: 100vh !important;
+                z-index: 99999 !important; /* Stack cleanly over search bar and profiles */
+                background-color: var(--bg-sidebar, #11111b) !important;
+                transition: left 0.3s ease-in-out !important; /* Smooth gliding movement logic */
+                box-shadow: 5px 0 15px rgba(0, 0, 0, 0.5);
+                display: flex !important;
+                flex-direction: column !important;
+                justify-content: space-between !important;
+                padding: 12px 8px !important;
+                box-sizing: border-box !important;
+            }
+
+            /* Slid onto the screen when active script class attaches */
+            .sidebar.mobile-open {
+                left: 0 !important;
+            }
+
+            /* --- MAIN CONTENT INDEPENDENT FLOW --- */
+            .main-content {
+                flex: 1 !important;
+                width: 100% !important;
+                height: 100vh !important;
+                margin-left: 0 !important;
+                overflow-y: auto !important; /* Scroll layout engine functions exclusively here */
+                padding: 12px !important;
+                box-sizing: border-box !important;
+                -webkit-overflow-scrolling: touch !important;
+            }
+
+            .topbar {
+                height: 50px !important;
+                padding: 0 !important;
+                margin-bottom: 16px !important;
+                display: flex !important;
+                flex-direction: row !important;
+                justify-content: space-between !important;
+                align-items: center !important;
+            }
+
+            .search-bar {
+                max-width: 140px !important;
+                height: 34px !important;
+                padding: 0 8px !important;
+            }
+
+            .search-bar input {
+                font-size: 0.75rem !important;
+            }
+
+            .topbar-actions {
+                gap: 8px !important;
+            }
+
+            #platformCurrencyConverter {
+                padding: 6px 8px !important;
+                font-size: 0.75rem !important;
+                border-radius: 6px !important;
+            }
+
+            .welcome-banner {
+                padding: 16px !important;
+                border-radius: 10px !important;
+            }
+
+            .welcome-banner h1 {
+                font-size: 1.15rem !important;
+            }
+
+            .welcome-banner .subtitle {
+                font-size: 0.75rem !important;
+            }
+
+            /* Maintain clean double card matrix rows instead of collapsing vertically */
+            .content-container div[style*="display: grid"], 
+            .content-container div[style*="grid-template-columns"] {
+                display: grid !important;
+                grid-template-columns: repeat(2, 1fr) !important;
+                gap: 12px !important;
+            }
+
+            .metric-card {
+                padding: 16px !important;
+                border-radius: 10px !important;
+            }
+
+            /* Input text field zoom safeguard override properties */
+            .custom-theme-input, 
+            .search-bar input,
+            select {
+                font-size: 16px !important;
+                transform: scale(0.85) !important;
+                transform-origin: left center !important;
+                width: 117% !important;
+            }
+        }
+    </style>
 </head>
 <body>
 
@@ -47,14 +200,16 @@
         <div class="main-content">
             
             <header class="topbar">
-    <button id="mobileMenuToggleBtn" class="mobile-menu-btn" style="display: none;">
-        <i class="ri-menu-line"></i>
-    </button>
-
-    <div class="search-bar">
-        <i class="ri-search-2-line"></i>
-        <input type="text" placeholder="Search Games">
-    </div>
+                <div style="display: flex; align-items: center;">
+                    <button id="mobileMenuToggleBtn" class="mobile-menu-btn" type="button">
+                        <i class="ri-menu-line"></i>
+                    </button>
+                    
+                    <div class="search-bar">
+                        <i class="ri-search-2-line"></i>
+                        <input type="text" placeholder="Search Games">
+                    </div>
+                </div>
                 
                 <div class="topbar-actions" style="display: flex; align-items: center; gap: 16px;">
                     
@@ -278,7 +433,7 @@
                          <div style="border-top: 1px solid var(--border-color); padding-top: 20px;">
                             <p style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 12px;">Active Session Management:</p>
             
-                            <button class="btn" id="systemSignOutBtn" style="background-color: var(--danger); color: white; display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                            <button class="btn" onclick="window.showCustomPopup('Your developer session has been safely closed. Terminating terminal authentication layers...', 'danger', () => { window.location.href='auth.html'; });" style="background-color: var(--danger); color: white; display: flex; align-items: center; gap: 8px; cursor: pointer;">
                                 <i class="ri-logout-box-r-line"></i> Sign Out
                             </button>
                          </div>
@@ -492,108 +647,37 @@
     <script src="assets/js/add-cart.js"></script>
     <script src="assets/js/close-popup.js"></script>
 
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getAuth, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-
-        // Your Central Firebase Configurations
-        const firebaseConfig = {
-            apiKey: "AIzaSyBYGpq7jtEhnYIfQw1xqcEEu0NfkQuceCU",
-            authDomain: "my-central-auth.firebaseapp.com",
-            projectId: "my-central-auth",
-            storageBucket: "my-central-auth.firebasestorage.app",
-            messagingSenderId: "623323853491",
-            appId: "1:623323853491:web:ab61e37cfc7193d17476c6",
-            measurementId: "G-3GT0ESLCX9"
-        };
-
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-
+    <script>
         document.addEventListener('DOMContentLoaded', () => {
-            // --- AUTHENTICATION REDIRECT GATE & SECURE SESSION MONITOR ---
-            let activeUser = JSON.parse(localStorage.getItem('activeSessionUser')) || {};
+            // --- MOBILE NAV DRAWER INTERACTIVE TOGGLE LOGIC ---
+            const mobileBtn = document.getElementById('mobileMenuToggleBtn');
+            const sidebarEl = document.querySelector('.sidebar');
+            const mainContentEl = document.querySelector('.main-content');
 
-            onAuthStateChanged(auth, (user) => {
-                if (!user) {
-                    // Wipes cached elements and moves to validation screen immediately
-                    localStorage.removeItem('activeSessionUser');
-                    window.location.href = "auth.html";
-                } else {
-                    // Coordinates local tracking cache rules safely
-                    if (!activeUser.email) {
-                        activeUser.email = user.email;
-                        activeUser.name = user.displayName || user.email.split('@')[0];
-                        localStorage.setItem('activeSessionUser', JSON.stringify(activeUser));
-                    }
-                    
-                    // Toggle admin catalog registration visibility rules natively
-                    const registerGameBtn = document.getElementById('openRegisterGameModalBtn');
-                    if (registerGameBtn) {
-                        if (user.email === "dev.crxvengs@gmail.com") {
-                            registerGameBtn.style.display = "inline-flex";
-                        } else {
-                            registerGameBtn.style.display = "none";
-                        }
-                    }
+            if (mobileBtn && sidebarEl) {
+                mobileBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    sidebarEl.classList.toggle('mobile-open');
+                });
 
-                    // Setup user configuration identities matching account states
-                    let displayUsername = "New Publisher";
-                    if (activeUser && activeUser.name) {
-                        displayUsername = activeUser.name.replace(/<[^>]*>/g, '').trim();
-                    } else if (user.email) {
-                        displayUsername = user.email.split('@')[0];
-                    }
-
-                    const cleanSidebarName = displayUsername.includes('ri-git-fork-fill') ? displayUsername : `<i class="ri-git-fork-fill"></i> ${displayUsername}`;
-                    
-                    if (settingsUsernameInput) settingsUsernameInput.value = displayUsername.replace(/<[^>]*>/g, '');
-                    if (sidebarUsernameText) sidebarUsernameText.innerHTML = cleanSidebarName;
-                    if (profileHeaderNameDisplay) profileHeaderNameDisplay.innerHTML = cleanSidebarName;
-                    
-                    if (settingsEmailInput) settingsEmailInput.value = user.email;
-                }
-            });
-
-            // --- MOBILE NAV DRAWER INTERACTIVE LOGIC MATRIX ---
-const mobileBtn = document.getElementById('mobileMenuToggleBtn');
-const sidebarEl = document.querySelector('.sidebar');
-const mainContentEl = document.querySelector('.main-content');
-
-if (mobileBtn && sidebarEl) {
-    // Open/Close sidebar drawer when clicking the 3 lines button
-    mobileBtn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        sidebarEl.classList.toggle('mobile-open');
-    });
-
-    // Automatically slide drawer shut if the user clicks anywhere on the main layout screen area
-    if (mainContentEl) {
-        mainContentEl.addEventListener('click', () => {
-            if (sidebarEl.classList.contains('mobile-open')) {
-                sidebarEl.classList.remove('mobile-open');
-            }
-        });
-    }
-}
-
-            // Connect Firebase closure parameters into the layout's active Sign Out action buttons
-            const signoutBtn = document.getElementById('systemSignOutBtn');
-            if (signoutBtn) {
-                signoutBtn.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    window.showCustomPopup('Your developer session has been safely closed. Terminating terminal authentication layers...', 'danger', async () => {
-                        try {
-                            localStorage.removeItem('activeSessionUser');
-                            await signOut(auth);
-                            window.location.href = 'auth.html';
-                        } catch (err) {
-                            console.error("Signout error:", err);
-                            window.location.href = 'auth.html';
+                if (mainContentEl) {
+                    mainContentEl.addEventListener('click', () => {
+                        if (sidebarEl.classList.contains('mobile-open')) {
+                            sidebarEl.classList.remove('mobile-open');
                         }
                     });
-                });
+                }
             }
+
+            // --- AUTHENTICATION REDIRECT GATE & SESSION INITIALIZATION ---
+            let activeUser = JSON.parse(localStorage.getItem('activeSessionUser'));
+            
+            if (!activeUser || !activeUser.email) {
+                window.location.href = "auth.html";
+                return; 
+            }
+
+            if (!activeUser) activeUser = {};
 
             const SIX_DAYS_MS = 6 * 24 * 60 * 60 * 1000;
             
@@ -674,6 +758,34 @@ if (mobileBtn && sidebarEl) {
                 emailToggle.addEventListener('change', (e) => {
                     savePreference('email_logs', e.target.checked);
                 });
+            }
+
+            const registerGameBtn = document.getElementById('openRegisterGameModalBtn');
+            if (registerGameBtn) {
+                if (activeUser && activeUser.email === "dev.crxvengs@gmail.com") {
+                    registerGameBtn.style.display = "inline-flex";
+                } else {
+                    registerGameBtn.style.display = "none";
+                }
+            }
+
+            let displayUsername = "New Publisher";
+            if (activeUser && activeUser.name) {
+                displayUsername = activeUser.name.replace(/<[^>]*>/g, '').trim();
+            } else if (activeUser && activeUser.email) {
+                displayUsername = activeUser.email.split('@')[0];
+            }
+
+            const cleanSidebarName = displayUsername.includes('ri-git-fork-fill') ? displayUsername : `<i class="ri-git-fork-fill"></i> ${displayUsername}`;
+            
+            if (settingsUsernameInput) settingsUsernameInput.value = displayUsername.replace(/<[^>]*>/g, '');
+            if (sidebarUsernameText) sidebarUsernameText.innerHTML = cleanSidebarName;
+            if (profileHeaderNameDisplay) profileHeaderNameDisplay.innerHTML = cleanSidebarName;
+            
+            if (activeUser && activeUser.email) {
+                if (settingsEmailInput) settingsEmailInput.value = activeUser.email;
+            } else {
+                if (settingsEmailInput) settingsEmailInput.value = localStorage.getItem('userEmail') || "No active email found";
             }
             
             if (settingsAvatarPreview) settingsAvatarPreview.src = temporaryAvatarBase64;

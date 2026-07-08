@@ -1,0 +1,75 @@
+/* Fullscreen Loading Overlay */
+.theme-loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(10, 10, 12, 0.95);
+    backdrop-filter: blur(8px);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 99999;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s ease;
+}
+
+/* Active State */
+.theme-loading-overlay.active {
+    opacity: 1;
+    pointer-events: all;
+}
+
+/* SVG Container */
+.loader-svg-wrapper {
+    width: 150px;
+    height: 150px;
+    margin-bottom: 20px;
+}
+
+/* The Animated Tracing Line */
+.loader-path {
+    stroke: var(--primary-color, #a855f7); /* Falls back to your purple if theme variable isn't fully set yet */
+    stroke-width: 6;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    fill: none;
+    
+    /* Tracing effect calculations */
+    stroke-dasharray: 500;
+    stroke-dashoffset: 500;
+    animation: traceLogo 2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+    filter: drop-shadow(0 0 8px var(--primary-color, #a855f7));
+}
+
+/* Status Text below the logo */
+.loader-text {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 13px;
+    letter-spacing: 3px;
+    color: #ffffff;
+    opacity: 0.8;
+    animation: pulseText 1.5s ease-in-out infinite;
+}
+
+/* Keyframes for the Line Loop */
+@keyframes traceLogo {
+    0% {
+        stroke-dashoffset: 500;
+    }
+    50% {
+        stroke-dashoffset: 0;
+    }
+    100% {
+        stroke-dashoffset: -500;
+    }
+}
+
+@keyframes pulseText {
+    0%, 100% { opacity: 0.4; }
+    50% { opacity: 0.9; }
+}
+

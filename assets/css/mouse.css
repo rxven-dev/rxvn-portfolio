@@ -1,0 +1,48 @@
+/* mouse.css - Custom Hardware Pointer & Interactive Dynamic Glow states */
+
+/* --- Cyberpunk Purple Cursor States --- */
+body[data-theme="cyberpunk"], body:not([data-theme]) {
+    cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3E%3Ccircle cx='8' cy='8' r='3' fill='%23a855f7'/%3E%3C/svg%3E") 8 8, auto;
+}
+body[data-theme="cyberpunk"] a, body[data-theme="cyberpunk"] button, body[data-theme="cyberpunk"] .btn, body[data-theme="cyberpunk"] .project-card, body[data-theme="cyberpunk"] .skill-tag, body[data-theme="cyberpunk"] .social-icons a, body[data-theme="cyberpunk"] .theme-option {
+    cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Ccircle cx='12' cy='12' r='8' fill='none' stroke='%23a855f7' stroke-width='2'/%3E%3Ccircle cx='12' cy='12' r='2' fill='%23a855f7'/%3E%3C/svg%3E") 12 12, pointer !important;
+}
+
+/* --- Emerald Green Cursor States --- */
+body[data-theme="emerald"] {
+    cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3E%3Ccircle cx='8' cy='8' r='3' fill='%2310b981'/%3E%3C/svg%3E") 8 8, auto;
+}
+body[data-theme="emerald"] a, body[data-theme="emerald"] button, body[data-theme="emerald"] .btn, body[data-theme="emerald"] .project-card, body[data-theme="emerald"] .skill-tag, body[data-theme="emerald"] .social-icons a, body[data-theme="emerald"] .theme-option {
+    cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Ccircle cx='12' cy='12' r='8' fill='none' stroke='%2310b981' stroke-width='2'/%3E%3Ccircle cx='12' cy='12' r='2' fill='%2310b981'/%3E%3C/svg%3E") 12 12, pointer !important;
+}
+
+/* --- Electric Blue Cursor States --- */
+body[data-theme="electric-blue"] {
+    cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3E%3Ccircle cx='8' cy='8' r='3' fill='%2300f0ff'/%3E%3C/svg%3E") 8 8, auto;
+}
+body[data-theme="electric-blue"] a, body[data-theme="electric-blue"] button, body[data-theme="electric-blue"] .btn, body[data-theme="electric-blue"] .project-card, body[data-theme="electric-blue"] .skill-tag, body[data-theme="electric-blue"] .social-icons a, body[data-theme="electric-blue"] .theme-option {
+    cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Ccircle cx='12' cy='12' r='8' fill='none' stroke='%2300f0ff' stroke-width='2'/%3E%3Ccircle cx='12' cy='12' r='2' fill='%2300f0ff'/%3E%3C/svg%3E") 12 12, pointer !important;
+}
+
+/* --- Crimson Red Cursor States --- */
+body[data-theme="crimson-red"] {
+    cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3E%3Ccircle cx='8' cy='8' r='3' fill='%23ff2a5f'/%3E%3C/svg%3E") 8 8, auto;
+}
+body[data-theme="crimson-red"] a, body[data-theme="crimson-red"] button, body[data-theme="crimson-red"] .btn, body[data-theme="crimson-red"] .project-card, body[data-theme="crimson-red"] .skill-tag, body[data-theme="crimson-red"] .social-icons a, body[data-theme="crimson-red"] .theme-option {
+    cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Ccircle cx='12' cy='12' r='8' fill='none' stroke='%23ff2a5f' stroke-width='2'/%3E%3Ccircle cx='12' cy='12' r='2' fill='%23ff2a5f'/%3E%3C/svg%3E") 12 12, pointer !important;
+}
+
+/* --- Neon Pink Cursor States --- */
+body[data-theme="neon-pink"] {
+    cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3E%3Ccircle cx='8' cy='8' r='3' fill='%23ff00bb'/%3E%3C/svg%3E") 8 8, auto;
+}
+body[data-theme="neon-pink"] a, body[data-theme="neon-pink"] button, body[data-theme="neon-pink"] .btn, body[data-theme="neon-pink"] .project-card, body[data-theme="neon-pink"] .skill-tag, body[data-theme="neon-pink"] .social-icons a, body[data-theme="neon-pink"] .theme-option {
+    cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Ccircle cx='12' cy='12' r='8' fill='none' stroke='%23ff00bb' stroke-width='2'/%3E%3Ccircle cx='12' cy='12' r='2' fill='%23ff00bb'/%3E%3C/svg%3E") 12 12, pointer !important;
+}
+
+/* 3. Safety reset against canvas interactions interfering with clicks */
+canvas {
+    user-select: none;
+    -webkit-user-select: none;
+    pointer-events: none !important;
+}

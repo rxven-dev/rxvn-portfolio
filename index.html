@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Raven Callenero | Creative Developer</title>
+    <link rel="stylesheet" href="assets/css/loading.css">
+    <link rel="stylesheet" href="index.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body data-theme="cyberpunk">
+
+    <canvas id="ambientCanvas"></canvas>
+
+    <audio id="hoverSound" src="https://assets.mixkit.co/active_storage/sfx/2568/2568-84.wav" preload="auto"></audio>
+
+    <header>
+        <div class="logo">
+            <a href="#hero" class="logo-link">
+                <div class="logo-icon">
+                    <span class="logo-r">R</span>
+                    <div class="wing-feather f1"></div>
+                    <div class="wing-feather f2"></div>
+                </div>
+                <span class="logo-text">Raven</span>
+            </a>
+        </div>
+
+        <div class="env-widget" id="envWidget">
+            <span class="widget-item location-time">
+                <i class="fa-regular fa-clock text-glow"></i>
+                <span id="localTime">00:00:00 AM</span>
+                <span id="localZone" class="widget-accent">SYS</span>
+            </span>
+            <span class="widget-divider"></span>
+            <span class="widget-item weather-status" id="weatherStatus">
+                <i class="fa-solid fa-satellite-dish pulse-icon"></i>
+                <span id="weatherText">Syncing...</span>
+            </span>
+            <span class="widget-divider"></span>
+            
+            <div class="theme-menu-container">
+                <button class="theme-selector-trigger" id="themeSelectorBtn">
+                    <i class="fa-solid fa-palette"></i>
+                    <span>THEME_MATRIX:</span>
+                    <span id="activeThemeLabel" class="active-theme-text">PURPLE</span>
+                    <i class="fa-solid fa-chevron-down chevron-indicator"></i>
+                </button>
+                
+                <div class="theme-dropdown-tray" id="themeDropdownTray">
+                    <div class="theme-option active" data-select-theme="cyberpunk">
+                        <span class="color-preview sw-purple"></span> Purple Matrix
+                    </div>
+                    <div class="theme-option" data-select-theme="emerald">
+                        <span class="color-preview sw-green"></span> Emerald Nodes
+                    </div>
+                    <div class="theme-option" data-select-theme="electric-blue">
+                        <span class="color-preview sw-blue"></span> Electric Blue
+                    </div>
+                    <div class="theme-option" data-select-theme="crimson-red">
+                        <span class="color-preview sw-red"></span> Crimson Red
+                    </div>
+                    <div class="theme-option" data-select-theme="neon-pink">
+                        <span class="color-preview sw-pink"></span> Neon Pink
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <nav>
+            <ul id="mainNav">
+                <li><a href="#hero" class="nav-item active">Home</a></li>
+                <li><a href="#about" class="nav-item">About</a></li>
+                <li><a href="#projects" class="nav-item">Projects</a></li>
+                <li><a href="#contact" class="nav-item">Contact</a></li>
+            </ul>
+        </nav>
+
+        <div class="scroll-progress-thread" id="scrollProgress"></div>
+    </header>
+
+    <section id="hero" class="hero-section scroll-reveal">
+        <div class="hero-content">
+            <div class="badge">SYSTEMS_ACTIVE_ // v3.5</div>
+            <h3>Hello, It's Me</h3>
+            <h1>Raven Callenero</h1>
+            <h3>And I'm a <span class="text-animate"></span></h3>
+            <p>I build sleek, modern, and highly performant web applications with a keen eye for detail, interactivity, and immersive user experiences.</p>
+            <div class="social-icons">
+                <a href="https://www.facebook.com/share/1Khp1696z6/" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
+                    <i class="fab fa-facebook-f"></i>
+                </a>
+                <a href="https://www.instagram.com/dasnotrxvn?igsh=c3h0aGhrYzZyc28=" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+                    <i class="fab fa-instagram"></i>
+                </a>
+                <a href="https://www.tiktok.com/@rxvenonlyacc?_r=1&_t=ZS-97fqnTxIiZh" target="_blank" rel="noopener noreferrer" aria-label="TikTok">
+                    <i class="fab fa-tiktok"></i>
+                </a>
+            </div>
+            <a href="#contact" class="btn">Hire Me</a>
+        </div>
+
+        <div class="hero-img">
+            <div class="hologram-wrapper">
+                <img src="https://i.ibb.co/wNbSwKW0/Untitled-design-removebg-preview.jpg" alt="Raven Profile" class="profile-pic">
+            </div>
+        </div>
+    </section>
+
+    <div class="marquee-ticker">
+        <div class="marquee-inner">
+            <span>JAVASCRIPT // REACT // NODE.JS // UI/UX DESIGN // HTML5 // CSS3 // RESPONSIVE ARCHITECTURE // ASYNC DATA FLUIDITY // WEB ANIMATION MATRIX // </span>
+            <span>JAVASCRIPT // REACT // NODE.JS // UI/UX DESIGN // HTML5 // CSS3 // RESPONSIVE ARCHITECTURE // ASYNC DATA FLUIDITY // WEB ANIMATION MATRIX // </span>
+        </div>
+    </div>
+
+    <section id="about" class="about-section scroll-reveal">
+        <div class="about-content">
+            <h2>About <span>Me</span></h2>
+            <p>I am a passionate developer who loves blending art and logic. With expertise in modern web technologies, I focus on writing clean code and creating intuitive user interfaces that leave a lasting impression.</p>
+            <div class="skills">
+                <div class="skill-tag">HTML5</div>
+                <div class="skill-tag">CSS3</div>
+                <div class="skill-tag">JavaScript</div>
+                <div class="skill-tag">React</div>
+                <div class="skill-tag">UI/UX Design</div>
+            </div>
+        </div>
+    </section>
+
+    <section id="projects" class="projects-section scroll-reveal">
+        <h2>My <span>Projects</span></h2>
+        <div class="projects-grid">
+            <div class="project-card" onclick="openProjectModal('ecommerce')">
+                <div class="project-glow-layer"></div>
+                <div class="project-icon"><i class="fas fa-code"></i></div>
+                <h3>E-Commerce Platform</h3>
+                <p>A full-featured online store with secure checkout and real-time inventory tracking.</p>
+                <span class="project-link">Explore Architecture <i class="fas fa-chevron-right"></i></span>
+            </div>
+            <div class="project-card" onclick="openProjectModal('analytics')">
+                <div class="project-glow-layer"></div>
+                <div class="project-icon"><i class="fas fa-chart-pie"></i></div>
+                <h3>Analytics Dashboard</h3>
+                <p>An interactive data visualization tool handling millions of data points smoothly.</p>
+                <span class="project-link">Explore Architecture <i class="fas fa-chevron-right"></i></span>
+            </div>
+            <div class="project-card" onclick="openProjectModal('saas')">
+                <div class="project-glow-layer"></div>
+                <div class="project-icon"><i class="fas fa-mobile-alt"></i></div>
+                <h3>SaaS Landing Page</h3>
+                <p>A highly optimized, fully responsive conversion engine for a modern startup.</p>
+                <span class="project-link">Explore Architecture <i class="fas fa-chevron-right"></i></span>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="contact-section scroll-reveal">
+        <h2>Contact <span>Me</span></h2>
+        <p>Have a project in mind or just want to say hi? Drop a message!</p>
+        
+        <form class="contact-form" id="contactForm" action="https://formspree.io/f/xkolavbg" method="POST">
+            <input type="text" name="name" placeholder="Your Name : ex Juan Dela Cruz" required>
+            <input type="email" name="email" placeholder="Your Email : ex juandelacruz@gmail.com" required>
+            <textarea name="message" placeholder="Your Message" rows="5" required></textarea>
+            <button type="submit" class="btn">Send Message</button>
+        </form>
+    </section>
+
+    <footer>
+        <p>&copy; 2026 Raven Callenero. All rights reserved.</p>
+    </footer>
+
+    <div class="modal-overlay" id="projectModal" onclick="closeProjectModal()">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <button class="modal-close" onclick="closeProjectModal()">&times;</button>
+            <div id="modalDataContainer"></div>
+        </div>
+    </div>
+
+    <div class="toast-container" id="toastContainer"></div>
+
+    <script src="assets/js/loading.js"></script>
+    <script src="assets/js/mouse.js"></script>
+    <script src="https://unpkg.com/typed.js@2.1.0/dist/typed.umd.js"></script>
+    
+    <script>
+        // --- 1. PROJECT OBJECTS ---
+        const projectData = {
+            ecommerce: {
+                title: "Premium E-Commerce Engine",
+                icon: "fa-code",
+                desc: "A production-ready store architecture using modern client-side caching strategies. Features complete real-time checkout verification loops, modular inventory tracking nodes, and full visual system synchronization panels.",
+                tech: ["React", "Node.js", "MongoDB", "Stripe API"]
+            },
+            analytics: {
+                title: "Next-Gen Analytics Dashboard",
+                icon: "fa-chart-pie",
+                desc: "High-frequency dashboard tool handling heavy asynchronous data streams. Implements lightweight vector structures to map out localized visual charts without causing frame-drops or blocking thread processing workflows.",
+                tech: ["JavaScript", "D3.js", "WebSockets", "CSS Grid"]
+            },
+            saas: {
+                title: "Optimized Landing Engine",
+                icon: "fa-mobile-alt",
+                desc: "A beautifully polished conversion framework optimized meticulously for sub-second layout metrics. Fully modular element nodes adapt dynamically to unique hardware configurations while protecting layout stability.",
+                tech: ["HTML5", "Sass", "GSAP ScrollTrigger", "BEM Core"]
+            }
+        };
+
+        // --- 2. HERO TYPING LOOP ---
+        var typed = new Typed('.text-animate', {
+            strings: ['Creative Developer.', 'UI/UX Enthusiast.', 'Problem Solver.'],
+            typeSpeed: 60,
+            backSpeed: 30,
+            loop: true
+        });
+
+        // --- 3. AMBIENT CANVAS DYNAMIC GRID CONTROLLER ---
+        const canvas = document.getElementById('ambientCanvas');
+        const ctx = canvas.getContext('2d');
+        let points = [];
+        const maxPoints = 45;
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        class Point {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.vx = (Math.random() - 0.5) * 0.35;
+                this.vy = (Math.random() - 0.5) * 0.35;
+                this.radius = Math.random() * 2 + 1;
+            }
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
+                if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
+                if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
+            }
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                ctx.fillStyle = getComputedStyle(document.body).getPropertyValue('--primary-glow').trim() || 'rgba(168, 85, 247, 0.25)';
+                ctx.fill();
+            }
+        }
+
+        for (let i = 0; i < maxPoints; i++) points.push(new Point());
+
+        function animateAmbientGrid() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            points.forEach(p => { p.update(); p.draw(); });
+
+            for (let i = 0; i < points.length; i++) {
+                for (let j = i + 1; j < points.length; j++) {
+                    const dist = Math.hypot(points[i].x - points[j].x, points[i].y - points[j].y);
+                    if (dist < 130) {
+                        ctx.beginPath();
+                        ctx.moveTo(points[i].x, points[i].y);
+                        ctx.lineTo(points[j].x, points[j].y);
+                        let alpha = (1 - dist / 130) * 0.08;
+                        let strokeColor = getComputedStyle(document.body).getPropertyValue('--primary-color').trim();
+                        ctx.strokeStyle = strokeColor ? hexToRgbA(strokeColor, alpha) : `rgba(168, 85, 247, ${alpha})`;
+                        ctx.lineWidth = 0.8;
+                        ctx.stroke();
+                    }
+                }
+            }
+            requestAnimationFrame(animateAmbientGrid);
+        }
+        animateAmbientGrid();
+
+        function hexToRgbA(hex, alpha) {
+            let c;
+            if(/^#([A-Fa-f0-9]{3}){1,2}$/.test(hex)){
+                c= hex.substring(1).split('');
+                if(c.length== 3){ c= [c[0], c[0], c[1], c[1], c[2], c[2]]; }
+                c= '0x'+c.join('');
+                return 'rgba('+[(c>>16)&255, (c>>8)&255, c&255].join(',')+','+alpha+')';
+            }
+            return hex;
+        }
+
+        // --- 4. NAVIGATION TRACKER AND SCROLL PROGRESS ---
+        window.addEventListener('scroll', () => {
+            const winScroll = document.documentElement.scrollTop || document.body.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            document.getElementById('scrollProgress').style.width = scrolled + '%';
+        });
+
+        // --- 5. AUTOMATED LOCAL WEATHER ENVIRONMENT ENGINE ---
+        function initializeEnvironmentWidget() {
+            setInterval(() => {
+                const now = new Date();
+                document.getElementById('localTime').textContent = now.toLocaleTimeString([], {
+                    hour: '2-digit', minute: '2-digit', second: '2-digit'
+                });
+            }, 1000);
+
+            try {
+                const zoneName = Intl.DateTimeFormat().resolvedOptions().timeZone.split('/').pop().replace('_', ' ');
+                document.getElementById('localZone').textContent = zoneName || "SYS";
+            } catch(e) { console.log(e); }
+
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(async (pos) => {
+                    try {
+                        const response = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${pos.coords.latitude}&longitude=${pos.coords.longitude}&current_weather=true`);
+                        const data = await response.json();
+                        if(data && data.current_weather) {
+                            const temp = Math.round(data.current_weather.temperature);
+                            const code = data.current_weather.weathercode;
+                            let icon = '<i class="fa-solid fa-cloud-sun"></i>';
+                            if (code === 0) icon = '<i class="fa-solid fa-sun" style="color: #fbbf24"></i>';
+                            else if ([51,53,55,61,63,65,80,81,82].includes(code)) icon = '<i class="fa-solid fa-cloud-showers-heavy" style="color: #3b82f6"></i>';
+                            else if ([95,96,99].includes(code)) icon = '<i class="fa-solid fa-cloud-bolt" style="color: #ef4444"></i>';
+                            document.getElementById('weatherStatus').innerHTML = `${icon} <span>${temp}°C</span>`;
+                        }
+                    } catch (err) { fallbackWeather(); }
+                }, () => fallbackWeather());
+            } else { fallbackWeather(); }
+        }
+        function fallbackWeather() {
+            document.getElementById('weatherStatus').innerHTML = `<i class="fa-solid fa-satellite"></i> <span>Online</span>`;
+        }
+        initializeEnvironmentWidget();
+
+        // --- 6. ADVANCED THEME SELECTOR DROPDOWN CONTROLLER (UPDATED WITH LOADING INTERCEPT) ---
+        const themeBtn = document.getElementById('themeSelectorBtn');
+        const themeTray = document.getElementById('themeDropdownTray');
+        const activeThemeLabel = document.getElementById('activeThemeLabel');
+
+        themeBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            themeTray.classList.toggle('open');
+            themeBtn.classList.toggle('active');
+        });
+
+        document.querySelectorAll('.theme-option').forEach(option => {
+            option.addEventListener('click', () => {
+                const selectedTheme = option.getAttribute('data-select-theme');
+                
+                // Intercept the change with the dynamic line tracing overlay
+                triggerThemeLoading(() => {
+                    document.querySelectorAll('.theme-option').forEach(o => o.classList.remove('active'));
+                    option.classList.add('active');
+                    document.body.setAttribute('data-theme', selectedTheme);
+                    
+                    const labelText = option.innerText.trim().toUpperCase().split(' ')[0];
+                    activeThemeLabel.textContent = labelText;
+                    
+                    triggerToast(`[SYSTEM]: Switched execution layer to ${labelText} theme.`);
+                });
+
+                themeTray.classList.remove('open');
+                themeBtn.classList.remove('active');
+            });
+        });
+
+        document.addEventListener('click', () => {
+            themeTray.classList.remove('open');
+            themeBtn.classList.remove('active');
+        });
+
+        // --- 7. ACTIVE VIEWPORT NAV HIGHLIGHT LOOP ---
+        const sections = document.querySelectorAll('section');
+        const navItems = document.querySelectorAll('.nav-item');
+        window.addEventListener('scroll', () => {
+            let activeId = "";
+            sections.forEach(sec => {
+                const top = sec.offsetTop - 120;
+                if (window.scrollY >= top) activeId = sec.getAttribute('id');
+            });
+            navItems.forEach(item => {
+                item.classList.remove('active');
+                if (item.getAttribute('href') === `#${activeId}`) item.classList.add('active');
+            });
+        });
+
+        // --- 8. AUDIO FEEDBACK MODULE ---
+        const audio = document.getElementById('hoverSound');
+        audio.volume = 0.04;
+        document.querySelectorAll('.nav-item, .btn, .project-card, .theme-selector-trigger, .theme-option, .social-icons a').forEach(el => {
+            el.addEventListener('mouseenter', () => {
+                audio.currentTime = 0;
+                audio.play().catch(() => {});
+            });
+        });
+
+        // --- 9. INTERACTIVE PROJECTS CASE-STUDY MODALS ---
+        function openProjectModal(key) {
+            const data = projectData[key];
+            if(!data) return;
+            const container = document.getElementById('modalDataContainer');
+            container.innerHTML = `
+                <div class="modal-header">
+                    <i class="fas ${data.icon} modal-title-icon"></i>
+                    <h2>${data.title}</h2>
+                </div>
+                <p class="modal-body-desc">${data.desc}</p>
+                <div class="modal-tech-wrapper">
+                    ${data.tech.map(t => `<span class="modal-tech-tag">${t}</span>`).join('')}
+                </div>
+                <div style="margin-top: 30px; display:flex; gap:15px;">
+                    <a href="#" class="btn" style="padding:10px 24px; font-size:14px;">Launch Application</a>
+                    <a href="#" class="btn secondary-btn" style="padding:10px 24px; font-size:14px;">View Repository</a>
+                </div>
+            `;
+            document.getElementById('projectModal').classList.add('active');
+        }
+        function closeProjectModal() {
+            document.getElementById('projectModal').classList.remove('active');
+        }
+
+        // --- 10. SCROLL REVEAL TRIGGERS (Intersection Observer API) ---
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if(entry.isIntersecting) { entry.target.classList.add('visible'); }
+            });
+        }, { threshold: 0.08 });
+        document.querySelectorAll('.scroll-reveal').forEach(sec => revealObserver.observe(sec));
+
+        // --- 11. NOTIFICATION SYSTEM TOAST DISPATCH NODES ---
+        function triggerToast(message) {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            toast.className = 'toast-msg';
+            toast.innerHTML = `<i class="fa-solid fa-circle-info"></i> <span>${message}</span>`;
+            container.appendChild(toast);
+            setTimeout(() => toast.classList.add('visible'), 50);
+            setTimeout(() => {
+                toast.classList.remove('visible');
+                setTimeout(() => toast.remove(), 400);
+            }, 3800);
+        }
+
+        // --- NEW: FORMSPREE ASYNC INTERCEPT WORKFLOW ---
+        document.getElementById('contactForm').addEventListener('submit', async function(e) {
+            e.preventDefault(); 
+            
+            const form = e.target;
+            const formData = new FormData(form);
+            
+            try {
+                const response = await fetch(form.action, {
+                    method: form.method,
+                    body: formData,
+                    headers: { 'Accept': 'application/json' }
+                });
+                
+                if (response.ok) {
+                    triggerToast("[SYSTEM]: Message encrypted & securely delivered to Raven.");
+                    form.reset(); 
+                } else {
+                    const data = await response.json();
+                    if (Object.hasOwn(data, 'errors')) {
+                        triggerToast("[ERROR]: " + data.errors.map(err => err.message).join(", "));
+                    } else {
+                        triggerToast("[SYSTEM ERROR]: Submission blocked by network parameters.");
+                    }
+                }
+            } catch (error) {
+                triggerToast("[CRITICAL]: Failed to broadcast to Formspree grid.");
+            }
+        });
+
+        // --- 12. PROJECT CARD INTERACTIVE 3D PARALLAX TRAJECTORIES ---
+        const cards = document.querySelectorAll('.project-card');
+        cards.forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                const xc = rect.width / 2;
+                const yc = rect.height / 2;
+                const angleX = (yc - y) / 10;
+                const angleY = (x - xc) / 10;
+                card.style.transform = `perspective(1000px) rotateX(${angleX}deg) rotateY(${angleY}deg) translateY(-8px)`;
+                const glow = card.querySelector('.project-glow-layer');
+                if(glow) glow.style.background = `radial-gradient(circle 130px at ${x}px ${y}px, var(--spotlight-glow), transparent 80%)`;
+            });
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) translateY(0px)`;
+                const glow = card.querySelector('.project-glow-layer');
+                if(glow) glow.style.background = 'transparent';
+            });
+        });
+    </script>
+</body>
+</html>

@@ -116,7 +116,7 @@
         </div>
     </div>
 
-    <section id="about" class="about-section scroll-reveal">
+<section id="about" class="about-section scroll-reveal">
         <div class="about-content">
             <h2>About <span>Me</span></h2>
             <p>I am a passionate developer who loves blending art and logic. With expertise in modern web technologies, I focus on writing clean code and creating intuitive user interfaces that leave a lasting impression.</p>
@@ -127,7 +127,38 @@
                 <div class="skill-tag">React</div>
                 <div class="skill-tag">UI/UX Design</div>
             </div>
-        </div>
+
+            <div class="gaming-matrix">
+                <h3 class="gaming-title">// GAMING_NODES_ACTIVE</h3>
+                <p class="gaming-subtitle">When I'm not coding, I'm ranking up. Click a node to view network protocols and add me!</p>
+                
+                <div class="gaming-grid">
+                    <div class="game-card project-card" onclick="openProjectModal('mlbb')">
+                        <div class="project-glow-layer"></div>
+                        <div class="game-card-bg" style="background-image: url('https://i.ibb.co/Ktr38Mm/hirara-mlbb.jpg');"></div>
+                        <div class="game-card-overlay"></div>
+                        <div class="game-icon ml-color"><i class="fa-solid fa-mobile-screen-button"></i></div>
+                        <div class="game-info">
+                            <h4>Mobile Legends</h4>
+                            <p class="game-id">ID: <span>955702601</span></p>
+                            <span class="game-server">Server: 10882</span>
+                        </div>
+                    </div>
+
+                    <div class="game-card project-card" onclick="openProjectModal('val')">
+                        <div class="project-glow-layer"></div>
+                        <div class="game-card-bg" style="background-image: url('https://i.ibb.co/r2dFTb9K/3717314.jpg');"></div>
+                        <div class="game-card-overlay"></div>
+                        <div class="game-icon val-color"><i class="fa-solid fa-crosshairs"></i></div>
+                        <div class="game-info">
+                            <h4>Valorant</h4>
+                            <p class="game-id">Riot ID: <span>Kyze#0968</span></p>
+                            <span class="game-server">Region: SEA</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </div>
     </section>
 
     <section id="projects" class="projects-section scroll-reveal">
@@ -206,6 +237,18 @@
                 icon: "fa-mobile-alt",
                 desc: "A beautifully polished conversion framework optimized meticulously for sub-second layout metrics. Fully modular element nodes adapt dynamically to unique hardware configurations while protecting layout stability.",
                 tech: ["HTML5", "Sass", "GSAP ScrollTrigger", "BEM Core"]
+            },
+            mlbb: {
+                title: "Mobile Legends: Bang Bang",
+                icon: "fa-mobile-screen-button",
+                desc: "Let's team up for some classic or ranked games! Main roles: Gold Lane / Mid. Send me a request and drop a message so I know it's you.",
+                tech: ["ID: 955702601", "Server: 10882", "Region: PH"]
+            },
+            val: {
+                title: "VALORANT Battle Node",
+                icon: "fa-crosshairs",
+                desc: "Looking for competitive tactical queues or chill unrated/swiftplay runs. Main agents: Duelist/Initiator. Hit me up on the Riot client!",
+                tech: ["Riot ID: Kyze#0968", "Region: SEA", "Status: Ready"]
             }
         };
 
@@ -386,9 +429,12 @@
         });
 
         // --- 8. AUDIO FEEDBACK MODULE ---
+// --- 8. AUDIO FEEDBACK MODULE ---
         const audio = document.getElementById('hoverSound');
         audio.volume = 0.04;
-        document.querySelectorAll('.nav-item, .btn, .project-card, .theme-selector-trigger, .theme-option, .social-icons a').forEach(el => {
+        
+        // PASTE / UPDATE THIS LINE RIGHT HERE:
+        document.querySelectorAll('.nav-item, .btn, .project-card, .theme-selector-trigger, .theme-option, .social-icons a, .game-card').forEach(el => {
             el.addEventListener('mouseenter', () => {
                 audio.currentTime = 0;
                 audio.play().catch(() => {});
